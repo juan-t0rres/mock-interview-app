@@ -8,8 +8,7 @@
   </head>
   <body>
     <div id="content">
-      <h1>My App</h1>
-
+        <h1>My App</h1>
         <form action="/data" method="POST">
             <label for="interviewTopic">Enter the topic you would like to interview on:</label>
             <input type="text" list="interviewTopic"/>
@@ -17,7 +16,7 @@
                 <option>Data Structures and Algorithms</option>
                 <option>Data Structures Only</option>
                 <option>Design and Analysis of Algorithms</option>
-            </datalist>
+            </datalist> <br/><br/>
             <label for="spokenLang">Enter the spoken language you would like to interview in:</label>
             <input type="text" list="spokenLang"/>
             <datalist id="spokenLang">
@@ -27,8 +26,7 @@
                 <option>Hindustani</option>
                 <option>Spanish</option>
                 <option>Arabic</option>
-            </datalist>
-            <br/>
+            </datalist> <br/><br/>
             <label for="programmingLang">Choose a Programming Language:</label>
             <select id="programmingLang" required>
                 <option value="Java">Java</option>
@@ -37,8 +35,13 @@
                 <option value="C#">C#</option>
                 <option value="">C</option>
                 <option value="JavaScript">JavaScript</option>
-            </select>
-            <br/>
+            </select> <br/><br/>
+            <label for="hangoutsLink">Paste a link to a Google Hangouts chat for your interview:</label>
+            <input type="text" id="hangoutsLink" name="hangoutsLink"/> <br/><br/>
+
+            <label for="environmentLink">Paste a link to a pair programming environment for your interview:</label>
+            <input type="text" id="environmentLink" name="environmentLink"/> <br/><br/>
+        
             <input type="submit"/>
         </form>
     </div>
