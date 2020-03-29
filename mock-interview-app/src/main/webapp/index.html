@@ -11,6 +11,13 @@
       <h1>My App</h1>
 
         <form action="/data" method="POST">
+            <label for="interviewTopic">Enter the topic you would like to interview on:</label>
+            <input type="text" list="interviewTopic"/>
+            <datalist id="interviewTopic">
+                <option>Data Structures and Algorithms</option>
+                <option>Data Structures Only</option>
+                <option>Design and Analysis of Algorithms</option>
+            </datalist>
             <label for="spokenLang">Enter the spoken language you would like to interview in:</label>
             <input type="text" list="spokenLang"/>
             <datalist id="spokenLang">
