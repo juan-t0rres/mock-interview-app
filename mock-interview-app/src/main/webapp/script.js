@@ -13,3 +13,36 @@
 // limitations under the License.
 
 
+/*async function login() {
+  const response = await fetch('/login');
+  const hidelogin = document.getElementById("hidelogin");
+  const showlogout = document.getElementById("showlogout");
+  const user = await response.json();
+   if (user["useremail"] == ""){
+    hidelogin.style.display = "block";
+    showlogout.style.display ="none";
+ }else{
+    showlogout.style.display= "block";
+    hidelogin.style.display= "none";
+ }
+  const loginform = document.getElementById('loginform');
+  var str = "l";
+  console.log(str.link(user['url'])); 
+  console.log(user['url']);
+  loginform.action = user['url'];
+  
+}*/
+async function login() {
+  const response = await fetch('/login');
+  const user = await response.text();
+  const username = user.split("<p");
+  const hidelogin = document.getElementById("hidelogin");
+  const showlogout = document.getElementById("showlogout");
+  if (username[0].includes("stranger please sign in")){
+    hidelogin.style.display = "block";
+    showlogout.style.display ="none";
+   }else{
+    showlogout.style.display= "block";
+    hidelogin.style.display= "none";
+   }
+}
