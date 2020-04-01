@@ -10,37 +10,37 @@
     <div id="content">
         <h1>My App</h1>
         <form action="/data" method="POST">
-            <label for="interviewTopic">Enter the topic you would like to interview on:</label>
-            <input type="text" list="interviewTopic"/>
-            <datalist id="interviewTopic">
-                <option value="Data Structures and Algorithms">Data Structures and Algorithms</option>
-                <option value="Data Structures Only">Data Structures Only</option>
-                <option value="Design and Analysis of Algorithms">Design and Analysis of Algorithms</option>
+            <label for="interview_topic">Enter the topic you would like to interview on:</label>
+            <input type="text" list="interview_topic"/>
+            <datalist id="interview_topic">
+                <option value="Data_Structures_and_Algorithms">Data Structures and Algorithms</option>
+                <option value="Data_Structures_Only">Data Structures Only</option>
+                <option value="Design_and_Analysis_of_Algorithms">Design and Analysis of Algorithms</option>
             </datalist> <br/><br/>
-            <label for="spokenLang">Enter the spoken language you would like to interview in:</label>
-            <input type="text" list="spokenLang"/>
-            <datalist id="spokenLang">
+            <label for="spoken_lang">Enter the spoken language you would like to interview in:</label>
+            <input type="text" list="spoken_lang"/>
+            <datalist id="spoken_lang">
                 <! –– Please note that I just took the 5 most spoken languages in the world, as per https://www.fluentin3months.com/most-spoken-languages/ ––> 
-                <option value="Mandarin Chinese">Mandarin Chinese</option>
+                <option value="Mandarin_Chinese">Mandarin Chinese</option>
                 <option value="English">English</option>
                 <option value="Hindustani">Hindustani</option>
                 <option value="Spanish">Spanish</option>
                 <option value="Arabic">Arabic</option>
             </datalist> <br/><br/>
-            <label for="programmingLang">Choose a Programming Language:</label>
-            <select id="programmingLang" required>
+            <label for="programming_lang">Choose a Programming Language:</label>
+            <select id="programming_lang" required>
                 <option value="Java">Java</option>
                 <option value="Python">Python</option>
                 <option value="C++">C++</option>
                 <option value="C#">C#</option>
-                <option value="">C</option>
+                <option value="C">C</option>
                 <option value="JavaScript">JavaScript</option>
             </select> <br/><br/>
-            <label for="hangoutsLink">Paste a link to a Google Hangouts chat for your interview:</label>
-            <input type="text" id="hangoutsLink" name="hangoutsLink"/> <br/><br/>
+            <label for="hangouts_link">Paste a link to a Google Hangouts chat for your interview:</label>
+            <input type="text" id="hangouts_link" name="hangouts_link"/> <br/><br/>
 
-            <label for="environmentLink">Paste a link to a pair programming environment for your interview:</label>
-            <input type="text" id="environmentLink" name="environmentLink"/> <br/><br/>
+            <label for="environment_link">Paste a link to a pair programming environment for your interview:</label>
+            <input type="text" id="environment_link" name="environment_link"/> <br/><br/>
 
             <fieldset>
                 <label for="day_availability">Please mark your days of availability to interview below:</label> <br/>
@@ -70,10 +70,6 @@
                 <input type="checkbox" name="time_availability" value="10_11PM"/>10:00 PM - 11:00 PM EST<br/>
                 <input type="checkbox" name="time_availability" value="11PM_12AM"/>11:00 PM - 12:00 AM EST
             </fieldset> </br></br>
-
-
-
-
 
             <input type="submit"/>
         </form>
