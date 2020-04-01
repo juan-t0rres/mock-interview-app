@@ -42,8 +42,11 @@
             <label for="environment_link">Paste a link to a pair programming environment for your interview:</label>
             <input type="text" id="environment_link" name="environment_link"/> <br/><br/>
 
+           <label for="ideal_time">Please select your ideal date and time to interview:</label> 
+           <input type="datetime-local" id="ideal_ime" name="ideal_time" min="2020-01-01T00:00" max="2020-12-31T00:00"> <br/><br/>
+
             <fieldset>
-                <label for="day_availability">Please mark your days of availability to interview below:</label> <br/>
+                <label for="day_availability">Please mark all of your days of the week of availability to interview below:</label> <br/>
                 <input type="checkbox" name="day_availability" value="Sunday"/>Sunday<br/>
                 <input type="checkbox" name="day_availability" value="Monday"/>Monday<br/>
                 <input type="checkbox" name="day_availability" value="Tuesday"/>Tuesday<br/>
@@ -53,7 +56,7 @@
                 <input type="checkbox" name="day_availability" value="Saturday"/>Saturday
             </fieldset> </br></br>
             <fieldset>
-                <label for="time_availability">Please mark your times of availability to interview below:</label> <br/>
+                <label for="time_availability">Please mark all of your times of availability to interview below:</label> <br/>
                 <input type="checkbox" name="time_availability" value="9_10AM"/>9:00 AM - 10:00 AM EST<br/>
                 <input type="checkbox" name="time_availability" value="10_11AM"/>10:00 AM - 11:00 AM EST<br/>
                 <input type="checkbox" name="time_availability" value="11AM_12PM"/>11:00 AM - 12:00 PM EST<br/>
