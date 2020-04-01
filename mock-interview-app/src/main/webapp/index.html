@@ -9,6 +9,38 @@
   <body>
     <div id="content">
       <h1>My App</h1>
+
+        <form action="/data" method="POST">
+            <label for="interviewTopic">Enter the topic you would like to interview on:</label>
+            <input type="text" list="interviewTopic"/>
+            <datalist id="interviewTopic">
+                <option>Data Structures and Algorithms</option>
+                <option>Data Structures Only</option>
+                <option>Design and Analysis of Algorithms</option>
+            </datalist>
+            <label for="spokenLang">Enter the spoken language you would like to interview in:</label>
+            <input type="text" list="spokenLang"/>
+            <datalist id="spokenLang">
+                <! –– Please note that I just took the 5 most spoken languages in the world, as per https://www.fluentin3months.com/most-spoken-languages/ ––> 
+                <option>Mandarin Chinese</option>
+                <option>English</option>
+                <option>Hindustani</option>
+                <option>Spanish</option>
+                <option>Arabic</option>
+            </datalist>
+            <br/>
+            <label for="programmingLang">Choose a Programming Language:</label>
+            <select id="programmingLang" required>
+                <option value="Java">Java</option>
+                <option value="Python">Python</option>
+                <option value="C++">C++</option>
+                <option value="C#">C#</option>
+                <option value="">C</option>
+                <option value="JavaScript">JavaScript</option>
+            </select>
+            <br/>
+            <input type="submit"/>
+        </form>
     </div>
   </body>
 </html>
