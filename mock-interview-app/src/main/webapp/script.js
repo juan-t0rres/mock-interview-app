@@ -12,4 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
+async function getInterviewRequests(language) {
+    const response = await fetch('/data');
+    const listings = await response.json();
+    let html = "";
+    for(const listing of listings) {
+        if(language != "None" && listing.programmingLanguage != language)
+            continue;
+        html += `<div class="listing">`;
+        html += `<p><b>Preferred Topic (If Any):</b> ${listing.topic}</p>`;
+        html += `<p><b>Preferred Spoken Language:</b> ${listing.spokenLanguage}</p>`;
+        html += `<p><b>Programming Language:</b> ${listing.programmingLanguage}</p>`;
+        html += `<p><b>Hangouts meeting:</b> ${listing.communicationURL}</p>`;
+        html += `<p><b>Programming environment:</b> ${listing.environmentURL}</p>`;
+        let daysAvailable = "";
+        for(const day of listing.daysAvailable) {
+            daysAvailable += day + " ";
+        }
+        let timesAvailable = "";
+        for(const time of listing.timesAvailable) {
+            timesAvailable += time + " ";
+        }
+        html += `<p><b>Days of the Week Availability:</b> ${daysAvailable}</p>`;
+        html += `<p><b>Time Availability:</b> ${timesAvailable}</p>`;
+        html += `</div>`;
+    }
+    document.getElementById('interview-listings').innerHTML = html;
+}
