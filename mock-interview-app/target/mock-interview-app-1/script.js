@@ -20,8 +20,8 @@ async function getInterviewRequests(language) {
         if(language != "None" && listing.programmingLanguage != language)
             continue;
         html += `<div class="listing">`;
-        html += `<p><b>Preffered Topic (If Any):</b> ${listing.topic}</p>`;
-        html += `<p><b>Preffered Spoken Language:</b> ${listing.spokenLanguage}</p>`;
+        html += `<p><b>Preferred Topic (If Any):</b> ${listing.topic}</p>`;
+        html += `<p><b>Preferred Spoken Language:</b> ${listing.spokenLanguage}</p>`;
         html += `<p><b>Programming Language:</b> ${listing.programmingLanguage}</p>`;
         html += `<p><b>Hangouts meeting:</b> ${listing.communicationURL}</p>`;
         html += `<p><b>Programming environment:</b> ${listing.environmentURL}</p>`;
