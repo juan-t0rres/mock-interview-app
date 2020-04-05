@@ -1,7 +1,24 @@
 #content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+	margin-top: 2%;
+	margin-left: auto;
+  	margin-right: auto;
+  	width: 650px;
+}
+
+#header {
+	margin-left: 20%;
+	margin-right: 20%;
+}
+
+.link {
+	transition: color 0.3s;
+	color: black !important;
+	font-family: 'Roboto', sans-serif !important;
+	font-weight: bold !important;
+}
+
+.link:hover {
+	color: #007bff !important;
 }
 
 .listing {
