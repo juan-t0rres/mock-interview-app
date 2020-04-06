@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Mock Interview App</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <div id="content">
+      <h1>Mock Interview</h1>
+
+      <p> Hello! Welcome to our mock interview site. When you login in, you will be able to request 
+          an interview with a fellow peer! You can also hold interviews if you want to hellp your fellow peers!
+      </p>
+      <body onload="login()">
+       <form action="/login" method="GET" id = "loginform">
+        <div id="hidelogin">
+         <input type="submit" class ="login" value="Login" />
+        </div>
+     <!--  <form> 
+       <input type="button" class = "login" value = "Login"
+          value="insert button text here"
+            onClick="self.location='/login'">
+         </form> -->
+
+        
+        <div id="showlogout">
+         <input type="submit" class="logout" value="Logout"/>
+        </div>
+       </form> 
+      </body>
+    </div>
+  </body>
+</html>

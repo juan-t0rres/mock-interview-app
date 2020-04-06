@@ -91,7 +91,6 @@ public class DataServlet extends HttpServlet {
     interviewEntity.setProperty("timesAvailable",timesAvailable);
 
     interviewEntity.setProperty("timestamp",System.currentTimeMillis());
-    
     return interviewEntity;
   }
 

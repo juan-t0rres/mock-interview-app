@@ -39,3 +39,20 @@ async function getInterviewRequests(language) {
     }
     document.getElementById('interview-listings').innerHTML = html;
 }
+
+
+async function login() {
+  const response = await fetch('/login');
+  const user = await response.text();
+  const username = user.split("<p");
+  const hidelogin = document.getElementById("hidelogin");
+  const showlogout = document.getElementById("showlogout");
+  if (username[0].includes("stranger please sign in")){
+    hidelogin.style.display = "block";
+    showlogout.style.display ="none";
+   }else{
+    showlogout.style.display= "block";
+    hidelogin.style.display= "none";
+   }
+}
+
