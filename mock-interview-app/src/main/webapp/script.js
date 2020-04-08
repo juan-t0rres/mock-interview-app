@@ -39,3 +39,17 @@ async function getInterviewRequests(language) {
     }
     document.getElementById('interview-listings').innerHTML = html;
 }
+
+var counter = 1;
+var limit = 3;
+function addInput(divName){
+     if (counter == limit)  {
+          alert("You have reached the limit of adding " + counter + " inputs");
+     }
+     else {
+          var newdiv = document.createElement('div');
+          newdiv.innerHTML = "Entry " + (counter + 1) + " <br><input type='datetime-local' id='time_availability' name='time_availability' min='2020-01-01T00:00' max='2020-12-31T00:00'>";
+          document.getElementById(divName).appendChild(newdiv);
+          counter++;
+     }
+}
