@@ -1,5 +1,7 @@
 package com.google.sps.servlets;
 
+
+
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -36,18 +38,21 @@ public class NewRequest extends HttpServlet {
         return;
     }
     String userEmail = userService.getCurrentUser().getEmail();
-    Filter propertyFilter = new FilterPredicate("username", FilterOperator.EQUAL, userEmail);
-    Query q = new Query("InterviewRequest").setFilter(propertyFilter);
-    System.out.println(q);
-    boolean val = (q == null); 
-    response.getWriter().println(val);
-     response.getWriter().println(q);
-    /*if(q == null){
-        System.out.println("Username not found");
-        response.sendRedirect("/InterviewRequestForm.html");
-    }else{
+    boolean isfound = false; 
+    Query q = new Query("InterviewRequest"); 
+    PreparedQuery pq = datastore.prepare(q);
+    for (Entity result : pq.asIterable())
+    { 
+      if(userEmail.equals(result.getProperty("username"))){
+          isfound = true;
+      }
+    }
+    if(isfound){
         response.sendRedirect("/interviews.html");
-    }*/
+    }else{
+        response.sendRedirect("/InterviewRequestForm.html");
+    }
+   
   }
 }
       

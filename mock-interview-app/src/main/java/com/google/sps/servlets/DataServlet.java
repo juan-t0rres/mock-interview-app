@@ -16,6 +16,8 @@ package com.google.sps.servlets;
 import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -36,6 +38,11 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    UserService userService = UserServiceFactory.getUserService();
+    if (!userService.isUserLoggedIn()){
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        return;
+    }
     Query query = new Query("InterviewRequest").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -62,6 +69,11 @@ public class DataServlet extends HttpServlet {
   
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    UserService userService = UserServiceFactory.getUserService();
+    if (!userService.isUserLoggedIn()){
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        return;
+    }
     Entity newInterviewRequest = getInterviewRequest(request);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(newInterviewRequest);
@@ -69,6 +81,8 @@ public class DataServlet extends HttpServlet {
   }
 
   public Entity getInterviewRequest(HttpServletRequest request) {
+    UserService userService = UserServiceFactory.getUserService();
+    
     String topic = request.getParameter("topic");
     String spokenLanguage = request.getParameter("spokenLanguage");
     String programmingLanguage = request.getParameter("programmingLanguage");
@@ -81,6 +95,8 @@ public class DataServlet extends HttpServlet {
     String[] times = request.getParameterValues("time_availability");
     List<String> timesAvailable = Arrays.asList(times);
 
+    String username = userService.getCurrentUser().getEmail();
+
     Entity interviewEntity = new Entity("InterviewRequest");
     interviewEntity.setProperty("topic",topic);
     interviewEntity.setProperty("spokenLanguage",spokenLanguage);
@@ -91,6 +107,7 @@ public class DataServlet extends HttpServlet {
     interviewEntity.setProperty("timesAvailable",timesAvailable);
 
     interviewEntity.setProperty("timestamp",System.currentTimeMillis());
+    interviewEntity.setProperty("username",username);
     return interviewEntity;
   }
 
