@@ -45,6 +45,7 @@ public class NewRequest extends HttpServlet {
     { 
       if(userEmail.equals(result.getProperty("username"))){
           isfound = true;
+          break;
       }
     }
     if(isfound){
