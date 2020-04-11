@@ -33,6 +33,7 @@ public class NewRequest extends HttpServlet {
     response.setContentType("text/html");
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     UserService userService = UserServiceFactory.getUserService();
+    
     if (!userService.isUserLoggedIn()){
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         return;
