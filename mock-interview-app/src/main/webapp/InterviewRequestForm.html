@@ -1,54 +1,54 @@
-<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Interview Request Form</title>
-        <script src="script.js"></script>
-    </head>
-    <body>
-        <div id="content">
-            <h1>My App</h1>
-            <form action="/data" method="POST">
-                <label for="interview_topic">Enter the topic you would like to interview on:</label>
-                <input type="text" list="interview_topic" name="topic"/>
-                <datalist id="interview_topic">
-                    <option value="Data_Structures_and_Algorithms">Data Structures and Algorithms</option>
-                    <option value="Data_Structures_Only">Data Structures Only</option>
-                    <option value="Design_and_Analysis_of_Algorithms">Design and Analysis of Algorithms</option>
-                </datalist> <br/><br/>
-                <label for="spoken_lang">Enter the spoken language you would like to interview in:</label>
-                <input type="text" list="spoken_lang" name="spokenLanguage"/>
-                <datalist id="spoken_lang">
-                    <! –– Please note that I just took the 5 most spoken languages in the world, as per https://www.fluentin3months.com/most-spoken-languages/ ––> 
-                    <option value="Mandarin_Chinese">Mandarin Chinese</option>
-                    <option value="English">English</option>
-                    <option value="Hindustani">Hindustani</option>
-                    <option value="Spanish">Spanish</option>
-                    <option value="Arabic">Arabic</option>
-                </datalist> <br/><br/>
-                <label for="programming_lang">Choose a Programming Language:</label>
-                <select name="programmingLanguage" id="programming_lang" required>
-                    <option value="Java">Java</option>
-                    <option value="Python">Python</option>
-                    <option value="C++">C++</option>
-                    <option value="C#">C#</option>
-                    <option value="C">C</option>
-                    <option value="JavaScript">JavaScript</option>
-                </select> <br/><br/>
-                <label for="hangouts_link">Paste a link to a Google Hangouts chat for your interview:</label>
-                <input type="text" id="hangouts_link" name="communicationURL"/> <br/><br/>
+  <head>
+        <meta charset="UTF-8">
+        <title>Interview Request Form</title>
+        <script src="script.js"></script>
+  </head>
+    <body>
+        <div id="content">
+            <h1>My App</h1>
+            <form action="/data" method="POST">
+                <label for="interview_topic">Enter the topic you would like to interview on:</label>
+                <input type="text" list="interview_topic" name="topic"/>
+                <datalist id="interview_topic">
+                    <option value="Data_Structures_and_Algorithms">Data Structures and Algorithms</option>
+                    <option value="Data_Structures_Only">Data Structures Only</option>
+                    <option value="Design_and_Analysis_of_Algorithms">Design and Analysis of Algorithms</option>
+                </datalist> <br/><br/>
+                <label for="spoken_lang">Enter the spoken language you would like to interview in:</label>
+                <input type="text" list="spoken_lang" name="spokenLanguage"/>
+                <datalist id="spoken_lang">
+                    <! –– Please note that I just took the 5 most spoken languages in the world, as per https://www.fluentin3months.com/most-spoken-languages/ ––> 
+                    <option value="Mandarin_Chinese">Mandarin Chinese</option>
+                    <option value="English">English</option>
+                    <option value="Hindustani">Hindustani</option>
+                    <option value="Spanish">Spanish</option>
+                    <option value="Arabic">Arabic</option>
+                </datalist> <br/><br/>
+                <label for="programming_lang">Choose a Programming Language:</label>
+                <select name="programmingLanguage" id="programming_lang" required>
+                    <option value="Java">Java</option>
+                    <option value="Python">Python</option>
+                    <option value="C++">C++</option>
+                    <option value="C#">C#</option>
+                    <option value="C">C</option>
+                    <option value="JavaScript">JavaScript</option>
+                </select> <br/><br/>
+                <label for="hangouts_link">Paste a link to a Google Hangouts chat for your interview:</label>
+                <input type="text" id="hangouts_link" name="communicationURL"/> <br/><br/>
 
-                <label for="environment_link">Paste a link to a pair programming environment for your interview:</label>
-                <input type="text" id="environment_link" name="environmentURL"/> <br/><br/>
-                
-                <label for="time_availability">Choose your time availability to interview:</label> </br></br>
-                <div id="dynamicInput">
-                    Entry 1</br><input type="datetime-local" id="time_availability" name="time_availability" min="2020-01-01T00:00" max="2020-12-31T00:00">
-                </div>
-                <input type="button" value="Add another time availability" onClick="addInput('dynamicInput');"> </br></br>    
-                
-                <input type="submit"/>
-            </form>
-        </div>
-    </body>
+                <label for="environment_link">Paste a link to a pair programming environment for your interview:</label>
+                <input type="text" id="environment_link" name="environmentURL"/> <br/><br/>
+
+                <label for="time_availability">Choose your time availability to interview:</label> </br></br>
+                <div id="dynamicInput">
+                    Entry 1</br><input type="datetime-local" id="time_availability" name="time_availability" min="2020-01-01T00:00" max="2020-12-31T00:00">
+                </div>
+                <input type="button" value="Add another time availability" onClick="addInput('dynamicInput');"> </br></br>    
+
+                <input type="submit"/>
+            </form>
+        </div>
+    </body>
 </html>
