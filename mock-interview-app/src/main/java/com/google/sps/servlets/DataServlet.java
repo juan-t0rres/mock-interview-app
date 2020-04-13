@@ -16,6 +16,8 @@ package com.google.sps.servlets;
 import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -48,12 +50,12 @@ public class DataServlet extends HttpServlet {
         String programmingLanguage = (String)entity.getProperty("programmingLanguage");
         String communicationURL = (String)entity.getProperty("communicationURL");
         String environmentURL = (String)entity.getProperty("environmentURL");
-        
         List<String> daysAvailable = (List<String>)entity.getProperty("daysAvailable");
         List<String> timesAvailable = (List<String>)entity.getProperty("timesAvailable");
+        String key = KeyFactory.keyToString(entity.getKey());
         long timestamp = (long)entity.getProperty("timestamp");
 
-        interviews.add(new InterviewRequest(topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,daysAvailable,timesAvailable,timestamp));
+        interviews.add(new InterviewRequest(topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,daysAvailable,timesAvailable,key,timestamp));
     }
 
     response.setContentType("application/json;");
@@ -62,13 +64,13 @@ public class DataServlet extends HttpServlet {
   
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Entity newInterviewRequest = getInterviewRequest(request);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(newInterviewRequest);
+    Entity interviewEntity = getInterviewEntity(request);
+    datastore.put(interviewEntity);
     response.sendRedirect("/interviews.html");
   }
 
-  public Entity getInterviewRequest(HttpServletRequest request) {
+  public Entity getInterviewEntity(HttpServletRequest request) {
     String topic = request.getParameter("topic");
     String spokenLanguage = request.getParameter("spokenLanguage");
     String programmingLanguage = request.getParameter("programmingLanguage");
@@ -89,7 +91,6 @@ public class DataServlet extends HttpServlet {
     interviewEntity.setProperty("environmentURL",environmentURL);
     interviewEntity.setProperty("daysAvailable",daysAvailable);
     interviewEntity.setProperty("timesAvailable",timesAvailable);
-
     interviewEntity.setProperty("timestamp",System.currentTimeMillis());
     
     return interviewEntity;
@@ -107,10 +108,11 @@ class InterviewRequest {
     public List<String> daysAvailable;
     // Times will tentatively be stored as strings until we decide on a better class to use
     public List<String> timesAvailable;
+    public String key;
     public long timestamp;
 
     public InterviewRequest(String topic, String spokenLanguage, String programmingLanguage, String communicationURL, String environmentURL, 
-    List<String> daysAvailable, List<String> timesAvailable, long timestamp) {
+    List<String> daysAvailable, List<String> timesAvailable, String key, long timestamp) {
         this.topic = topic;
         this.spokenLanguage = spokenLanguage;
         this.programmingLanguage = programmingLanguage;
@@ -118,6 +120,7 @@ class InterviewRequest {
         this.environmentURL = environmentURL;
         this.daysAvailable = daysAvailable;
         this.timesAvailable = timesAvailable;  
+        this.key = key;
         this.timestamp = timestamp; 
     }
 }
