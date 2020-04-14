@@ -16,8 +16,12 @@ package com.google.sps.servlets;
 import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+<<<<<<< HEAD
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+=======
+import com.google.appengine.api.datastore.KeyFactory;
+>>>>>>> e8f24b44875e5e8f50bef6814ea771ddd7bdff30
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -29,7 +33,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.net.URL;
 import java.util.*;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
@@ -55,12 +58,11 @@ public class DataServlet extends HttpServlet {
         String programmingLanguage = (String)entity.getProperty("programmingLanguage");
         String communicationURL = (String)entity.getProperty("communicationURL");
         String environmentURL = (String)entity.getProperty("environmentURL");
-        
-        List<String> daysAvailable = (List<String>)entity.getProperty("daysAvailable");
         List<String> timesAvailable = (List<String>)entity.getProperty("timesAvailable");
+        String key = KeyFactory.keyToString(entity.getKey());
         long timestamp = (long)entity.getProperty("timestamp");
 
-        interviews.add(new InterviewRequest(topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,daysAvailable,timesAvailable,timestamp));
+        interviews.add(new InterviewRequest(topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,timesAvailable,key,timestamp));
     }
 
     response.setContentType("application/json;");
@@ -69,6 +71,7 @@ public class DataServlet extends HttpServlet {
   
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+<<<<<<< HEAD
     UserService userService = UserServiceFactory.getUserService();
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     if (!userService.isUserLoggedIn()){
@@ -97,14 +100,20 @@ public class DataServlet extends HttpServlet {
   public Entity getInterviewRequest(HttpServletRequest request) {
     UserService userService = UserServiceFactory.getUserService();
     
+=======
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Entity interviewEntity = getInterviewEntity(request);
+    datastore.put(interviewEntity);
+    response.sendRedirect("/interviews.html");
+  }
+
+  public Entity getInterviewEntity(HttpServletRequest request) {
+>>>>>>> e8f24b44875e5e8f50bef6814ea771ddd7bdff30
     String topic = request.getParameter("topic");
     String spokenLanguage = request.getParameter("spokenLanguage");
     String programmingLanguage = request.getParameter("programmingLanguage");
     String communicationURL = request.getParameter("communicationURL");
     String environmentURL = request.getParameter("environmentURL");
-    
-    String[] days = request.getParameterValues("day_availability");
-    List<String> daysAvailable = Arrays.asList(days);
 
     String[] times = request.getParameterValues("time_availability");
     List<String> timesAvailable = Arrays.asList(times);
@@ -117,9 +126,7 @@ public class DataServlet extends HttpServlet {
     interviewEntity.setProperty("programmingLanguage",programmingLanguage);
     interviewEntity.setProperty("communicationURL",communicationURL);
     interviewEntity.setProperty("environmentURL",environmentURL);
-    interviewEntity.setProperty("daysAvailable",daysAvailable);
     interviewEntity.setProperty("timesAvailable",timesAvailable);
-
     interviewEntity.setProperty("timestamp",System.currentTimeMillis());
     interviewEntity.setProperty("username",username);
     return interviewEntity;
@@ -134,20 +141,20 @@ class InterviewRequest {
     public String topic, spokenLanguage, programmingLanguage;
     // URLs will tentatively be stored as strings until we decide on a better class to use
     public String communicationURL, environmentURL;
-    public List<String> daysAvailable;
     // Times will tentatively be stored as strings until we decide on a better class to use
     public List<String> timesAvailable;
+    public String key;
     public long timestamp;
 
     public InterviewRequest(String topic, String spokenLanguage, String programmingLanguage, String communicationURL, String environmentURL, 
-    List<String> daysAvailable, List<String> timesAvailable, long timestamp) {
+                            List<String> timesAvailable, String key, long timestamp) {
         this.topic = topic;
         this.spokenLanguage = spokenLanguage;
         this.programmingLanguage = programmingLanguage;
         this.communicationURL = communicationURL;     
         this.environmentURL = environmentURL;
-        this.daysAvailable = daysAvailable;
         this.timesAvailable = timesAvailable;  
+        this.key = key;
         this.timestamp = timestamp; 
     }
 }

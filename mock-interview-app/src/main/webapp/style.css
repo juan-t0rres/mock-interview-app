@@ -1,7 +1,36 @@
+html {
+	position: relative;
+	min-height: 100%;
+}
+
+body {
+	margin-bottom: 70px;
+}
+
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 70px;
+	line-height: 60px;
+}
+
 #content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+	margin-top: 2%;
+	margin-left: auto;
+  	margin-right: auto;
+  	width: 650px;
+}
+
+.link {
+	transition: color 0.3s;
+	color: black !important;
+	font-family: 'Roboto', sans-serif !important;
+	font-weight: bold !important;
+}
+
+.link:hover {
+	color: #007bff !important;
 }
 
 .listing {

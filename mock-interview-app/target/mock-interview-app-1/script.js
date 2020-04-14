@@ -60,3 +60,9 @@ async function login() {
    }
 }
 
+<<<<<<< HEAD
+=======
+async function getHeader() {
+    $("#header-placeholder").load("header.html");
+}
+>>>>>>> e8f24b44875e5e8f50bef6814ea771ddd7bdff30
