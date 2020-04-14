@@ -70,13 +70,27 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     if (!userService.isUserLoggedIn()){
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         return;
     }
-    Entity newInterviewRequest = getInterviewRequest(request);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(newInterviewRequest);
+
+    String userEmail = userService.getCurrentUser().getEmail();
+    boolean isfound = false; 
+    Query q = new Query("InterviewRequest"); 
+    PreparedQuery pq = datastore.prepare(q);
+    for (Entity result : pq.asIterable())
+    { 
+      if(userEmail.equals(result.getProperty("username"))){
+          isfound = true;
+          break;
+      }
+    }
+    if(!isfound){
+        Entity newInterviewRequest = getInterviewRequest(request);
+        datastore.put(newInterviewRequest);    
+    }
     response.sendRedirect("/interviews.html");
   }
 

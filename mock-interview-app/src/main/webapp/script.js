@@ -38,7 +38,9 @@ async function getInterviewRequests(language) {
         html += `</div>`;
     }
     document.getElementById('interview-listings').innerHTML = html;
-}
+
+    }
+
 
 
 async function login() {

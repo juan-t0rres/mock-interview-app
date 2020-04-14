@@ -13,6 +13,8 @@
 // limitations under the License.
 
 async function getInterviewRequests(language) {
+    const newRequest =  await fetch('/newRequest');
+    
     const response = await fetch('/data');
     const listings = await response.json();
     let html = "";
@@ -38,7 +40,9 @@ async function getInterviewRequests(language) {
         html += `</div>`;
     }
     document.getElementById('interview-listings').innerHTML = html;
-}
+
+    }
+
 
 
 async function login() {
