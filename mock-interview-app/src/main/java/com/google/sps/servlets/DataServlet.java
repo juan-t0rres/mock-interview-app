@@ -16,7 +16,12 @@ package com.google.sps.servlets;
 import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+
 import com.google.appengine.api.datastore.KeyFactory;
+
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -30,16 +35,22 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.util.*;
 
+
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    UserService userService = UserServiceFactory.getUserService(); 
+    if (!userService.isUserLoggedIn()){
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        return;
+    }
     Query query = new Query("InterviewRequest").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-
+    
     List<InterviewRequest> interviews = new ArrayList<>();
 
     for (Entity entity : results.asIterable()) {
@@ -61,13 +72,32 @@ public class DataServlet extends HttpServlet {
   
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    UserService userService = UserServiceFactory.getUserService();
+    if (!userService.isUserLoggedIn()){
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        return;
+    }
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Entity interviewEntity = getInterviewEntity(request);
-    datastore.put(interviewEntity);
+    String userEmail = userService.getCurrentUser().getEmail();
+    boolean isfound = false; 
+    Query q = new Query("InterviewRequest"); 
+    PreparedQuery pq = datastore.prepare(q);
+    for (Entity result : pq.asIterable())
+    { 
+      if(userEmail.equals(result.getProperty("username"))){
+        isfound = true;
+        break;
+      }
+    }
+    if(!isfound){
+        Entity newInterviewRequest = getInterviewEntity(request);
+        datastore.put(newInterviewRequest);    
+    }
     response.sendRedirect("/interviews.html");
   }
 
   public Entity getInterviewEntity(HttpServletRequest request) {
+    UserService userService = UserServiceFactory.getUserService();
     String topic = request.getParameter("topic");
     String spokenLanguage = request.getParameter("spokenLanguage");
     String programmingLanguage = request.getParameter("programmingLanguage");
@@ -76,7 +106,7 @@ public class DataServlet extends HttpServlet {
 
     String[] times = request.getParameterValues("time_availability");
     List<String> timesAvailable = Arrays.asList(times);
-
+    String username = userService.getCurrentUser().getEmail();
     Entity interviewEntity = new Entity("InterviewRequest");
     interviewEntity.setProperty("topic",topic);
     interviewEntity.setProperty("spokenLanguage",spokenLanguage);
@@ -85,7 +115,7 @@ public class DataServlet extends HttpServlet {
     interviewEntity.setProperty("environmentURL",environmentURL);
     interviewEntity.setProperty("timesAvailable",timesAvailable);
     interviewEntity.setProperty("timestamp",System.currentTimeMillis());
-    
+    interviewEntity.setProperty("username",username);
     return interviewEntity;
   }
 
@@ -115,3 +145,4 @@ class InterviewRequest {
         this.timestamp = timestamp; 
     }
 }
+   
