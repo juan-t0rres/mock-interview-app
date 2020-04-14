@@ -25,23 +25,19 @@ async function getInterviewRequests(language) {
         html += `<p><b>Programming Language:</b> ${listing.programmingLanguage}</p>`;
         html += `<p><b>Hangouts meeting:</b> ${listing.communicationURL}</p>`;
         html += `<p><b>Programming environment:</b> ${listing.environmentURL}</p>`;
-        let daysAvailable = "";
-        for(const day of listing.daysAvailable) {
-            daysAvailable += day + " ";
-        }
         let timesAvailable = "";
         for(const time of listing.timesAvailable) {
             timesAvailable += time + " ";
         }
-        html += `<p><b>Days of the Week Availability:</b> ${daysAvailable}</p>`;
         html += `<p><b>Time Availability:</b> ${timesAvailable}</p>`;
         html += `</div>`;
     }
     document.getElementById('interview-listings').innerHTML = html;
 }
 
-async function getHeader() {
+function getSections() {
    $("#header-placeholder").load("header.html");
+   $("#footer-placeholder").load("footer.html");
 }
 
 var counter = 1;
