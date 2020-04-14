@@ -4,27 +4,28 @@
         <meta charset="UTF-8">
         <title>Interview Request Form</title>
         <script src="script.js"></script>
+        <link rel="stylesheet" href="style.css">
   </head>
-    <body>
+    <body >
         <div id="content">
-            <h1>My App</h1>
+            <h1>Interview Request</h1>
             <form action="/data" method="POST">
                 <label for="interview_topic">Enter the topic you would like to interview on:</label>
                 <input type="text" list="interview_topic" name="topic"/>
                 <datalist id="interview_topic">
-                    <option value="Data_Structures_and_Algorithms">Data Structures and Algorithms</option>
-                    <option value="Data_Structures_Only">Data Structures Only</option>
-                    <option value="Design_and_Analysis_of_Algorithms">Design and Analysis of Algorithms</option>
+                    <option>Data Structures and Algorithms</option>
+                    <option>Data Structures Only</option>
+                    <option>Design and Analysis of Algorithms</option>
                 </datalist> <br/><br/>
                 <label for="spoken_lang">Enter the spoken language you would like to interview in:</label>
                 <input type="text" list="spoken_lang" name="spokenLanguage"/>
                 <datalist id="spoken_lang">
                     <! –– Please note that I just took the 5 most spoken languages in the world, as per https://www.fluentin3months.com/most-spoken-languages/ ––> 
-                    <option value="Mandarin_Chinese">Mandarin Chinese</option>
-                    <option value="English">English</option>
-                    <option value="Hindustani">Hindustani</option>
-                    <option value="Spanish">Spanish</option>
-                    <option value="Arabic">Arabic</option>
+                    <option>Mandarin Chinese</option>
+                    <option>English</option>
+                    <option>Hindustani</option>
+                    <option>Spanish</option>
+                    <option>Arabic</option>
                 </datalist> <br/><br/>
                 <label for="programming_lang">Choose a Programming Language:</label>
                 <select name="programmingLanguage" id="programming_lang" required>
