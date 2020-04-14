@@ -16,12 +16,12 @@ package com.google.sps.servlets;
 import com.google.gson.Gson;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
-<<<<<<< HEAD
+
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-=======
+
 import com.google.appengine.api.datastore.KeyFactory;
->>>>>>> e8f24b44875e5e8f50bef6814ea771ddd7bdff30
+
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -35,13 +35,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.util.*;
 
+
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    UserService userService = UserServiceFactory.getUserService();
+    UserService userService = UserServiceFactory.getUserService(); 
     if (!userService.isUserLoggedIn()){
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         return;
@@ -49,7 +50,7 @@ public class DataServlet extends HttpServlet {
     Query query = new Query("InterviewRequest").addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-
+    
     List<InterviewRequest> interviews = new ArrayList<>();
 
     for (Entity entity : results.asIterable()) {
@@ -71,14 +72,12 @@ public class DataServlet extends HttpServlet {
   
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-<<<<<<< HEAD
     UserService userService = UserServiceFactory.getUserService();
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     if (!userService.isUserLoggedIn()){
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         return;
     }
-
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     String userEmail = userService.getCurrentUser().getEmail();
     boolean isfound = false; 
     Query q = new Query("InterviewRequest"); 
@@ -86,29 +85,19 @@ public class DataServlet extends HttpServlet {
     for (Entity result : pq.asIterable())
     { 
       if(userEmail.equals(result.getProperty("username"))){
-          isfound = true;
-          break;
+        isfound = true;
+        break;
       }
     }
     if(!isfound){
-        Entity newInterviewRequest = getInterviewRequest(request);
+        Entity newInterviewRequest = getInterviewEntity(request);
         datastore.put(newInterviewRequest);    
     }
     response.sendRedirect("/interviews.html");
   }
 
-  public Entity getInterviewRequest(HttpServletRequest request) {
-    UserService userService = UserServiceFactory.getUserService();
-    
-=======
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Entity interviewEntity = getInterviewEntity(request);
-    datastore.put(interviewEntity);
-    response.sendRedirect("/interviews.html");
-  }
-
   public Entity getInterviewEntity(HttpServletRequest request) {
->>>>>>> e8f24b44875e5e8f50bef6814ea771ddd7bdff30
+    UserService userService = UserServiceFactory.getUserService();
     String topic = request.getParameter("topic");
     String spokenLanguage = request.getParameter("spokenLanguage");
     String programmingLanguage = request.getParameter("programmingLanguage");
@@ -117,9 +106,7 @@ public class DataServlet extends HttpServlet {
 
     String[] times = request.getParameterValues("time_availability");
     List<String> timesAvailable = Arrays.asList(times);
-
     String username = userService.getCurrentUser().getEmail();
-
     Entity interviewEntity = new Entity("InterviewRequest");
     interviewEntity.setProperty("topic",topic);
     interviewEntity.setProperty("spokenLanguage",spokenLanguage);
@@ -158,3 +145,4 @@ class InterviewRequest {
         this.timestamp = timestamp; 
     }
 }
+   

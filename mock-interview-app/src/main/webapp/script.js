@@ -53,8 +53,7 @@ async function login() {
    }
 }
 
-<<<<<<< HEAD
-=======
+
 function getSections() {
    $("#header-placeholder").load("header.html");
    $("#footer-placeholder").load("footer.html");
@@ -73,4 +72,4 @@ function addInput(divName){
           counter++;
      }
 }  
->>>>>>> e8f24b44875e5e8f50bef6814ea771ddd7bdff30
+

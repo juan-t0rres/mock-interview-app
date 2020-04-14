@@ -13,8 +13,6 @@
 // limitations under the License.
 
 async function getInterviewRequests(language) {
-    const newRequest =  await fetch('/newRequest');
-    
     const response = await fetch('/data');
     const listings = await response.json();
     let html = "";
@@ -27,15 +25,10 @@ async function getInterviewRequests(language) {
         html += `<p><b>Programming Language:</b> ${listing.programmingLanguage}</p>`;
         html += `<p><b>Hangouts meeting:</b> ${listing.communicationURL}</p>`;
         html += `<p><b>Programming environment:</b> ${listing.environmentURL}</p>`;
-        let daysAvailable = "";
-        for(const day of listing.daysAvailable) {
-            daysAvailable += day + " ";
-        }
         let timesAvailable = "";
         for(const time of listing.timesAvailable) {
             timesAvailable += time + " ";
         }
-        html += `<p><b>Days of the Week Availability:</b> ${daysAvailable}</p>`;
         html += `<p><b>Time Availability:</b> ${timesAvailable}</p>`;
         html += `</div>`;
     }
@@ -60,9 +53,23 @@ async function login() {
    }
 }
 
-<<<<<<< HEAD
-=======
-async function getHeader() {
-    $("#header-placeholder").load("header.html");
+
+function getSections() {
+   $("#header-placeholder").load("header.html");
+   $("#footer-placeholder").load("footer.html");
 }
->>>>>>> e8f24b44875e5e8f50bef6814ea771ddd7bdff30
+
+var counter = 1;
+var limit = 3;
+function addInput(divName){
+     if (counter == limit)  {
+          alert("You have reached the limit of adding " + counter + " inputs");
+     }
+     else {
+          var newdiv = document.createElement('div');
+          newdiv.innerHTML = "Entry " + (counter + 1) + " <br><input type='datetime-local' id='time_availability' name='time_availability' min='2020-01-01T00:00' max='2020-12-31T00:00'>";
+          document.getElementById(divName).appendChild(newdiv);
+          counter++;
+     }
+}  
+
