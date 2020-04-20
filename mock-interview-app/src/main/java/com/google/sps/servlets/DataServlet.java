@@ -52,20 +52,15 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     
     List<InterviewRequest> interviews = new ArrayList<>();
-
-    for (Entity entity : results.asIterable()) {
-        String topic = (String)entity.getProperty("topic");
-        String spokenLanguage = (String)entity.getProperty("spokenLanguage");
-        String programmingLanguage = (String)entity.getProperty("programmingLanguage");
-        String communicationURL = (String)entity.getProperty("communicationURL");
-        String environmentURL = (String)entity.getProperty("environmentURL");
-        List<String> timesAvailable = (List<String>)entity.getProperty("timesAvailable");
-        String key = KeyFactory.keyToString(entity.getKey());
-        long timestamp = (long)entity.getProperty("timestamp");
-
-        interviews.add(new InterviewRequest(topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,timesAvailable,key,timestamp));
+    String key = request.getParameter("key");
+    if (key != null) {
+        // Handle request for specific entity
+        this.specificEntity(datastore, key, interviews);
+    } else {
+        // Handle request for all entities
+        this.allEntities(results, interviews);
     }
-
+    
     response.setContentType("application/json;");
     response.getWriter().println(getJson(interviews));
   }
@@ -94,6 +89,34 @@ public class DataServlet extends HttpServlet {
         datastore.put(newInterviewRequest);    
     }
     response.sendRedirect("/interviews.html");
+  }
+
+  public void allEntities(PreparedQuery results, List<InterviewRequest> interviews) {
+    for (Entity entity : results.asIterable()) {
+        String topic = (String)entity.getProperty("topic");
+        String spokenLanguage = (String)entity.getProperty("spokenLanguage");
+        String programmingLanguage = (String)entity.getProperty("programmingLanguage");
+        String communicationURL = (String)entity.getProperty("communicationURL");
+        String environmentURL = (String)entity.getProperty("environmentURL");
+        List<String> timesAvailable = (List<String>)entity.getProperty("timesAvailable");
+        String key = KeyFactory.keyToString(entity.getKey());
+        long timestamp = (long)entity.getProperty("timestamp");
+
+        interviews.add(new InterviewRequest(topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,timesAvailable,key,timestamp));
+    }
+  }
+
+  public void specificEntity(DatastoreService datastore, String key, List<InterviewRequest> interviews) {
+    Entity entity = datastore.get(key);
+    String topic = (String)entity.getProperty("topic");
+    String spokenLanguage = (String)entity.getProperty("spokenLanguage");
+    String programmingLanguage = (String)entity.getProperty("programmingLanguage");
+    String communicationURL = (String)entity.getProperty("communicationURL");
+    String environmentURL = (String)entity.getProperty("environmentURL");
+    List<String> timesAvailable = (List<String>)entity.getProperty("timesAvailable");
+    long timestamp = (long)entity.getProperty("timestamp");
+
+    interviews.add(new InterviewRequest(topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,timesAvailable,key,timestamp));
   }
 
   public Entity getInterviewEntity(HttpServletRequest request) {

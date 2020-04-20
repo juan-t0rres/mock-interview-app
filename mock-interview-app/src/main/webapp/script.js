@@ -13,7 +13,16 @@
 // limitations under the License.
 
 async function getInterviewRequests(language) {
-    const response = await fetch('/data');
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const key = urlParams.get('key');
+    const response;
+    if(key != null) {
+        response = await fetch('/data?key=" + key');
+    }
+    else {
+        response = await fetch('/data');
+    }
     const listings = await response.json();
     let html = "";
     for(const listing of listings) {
@@ -33,8 +42,7 @@ async function getInterviewRequests(language) {
         html += `</div>`;
     }
     document.getElementById('interview-listings').innerHTML = html;
-
-    }
+}
 
 
 
