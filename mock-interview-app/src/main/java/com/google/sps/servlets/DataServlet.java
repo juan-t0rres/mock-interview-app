@@ -21,6 +21,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Key;
 
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
@@ -107,7 +108,16 @@ public class DataServlet extends HttpServlet {
   }
 
   public void specificEntity(DatastoreService datastore, String key, List<InterviewRequest> interviews) {
-    Entity entity = datastore.get(key);
+    Key interviewKey = KeyFactory.stringToKey(key);
+    Entity entity;
+    try {
+        entity = datastore.get(interviewKey);   
+    }
+    catch(Exception e) {
+        System.err.println("Error: Cannot find interview listing with given key " + key);
+        return;
+    }
+
     String topic = (String)entity.getProperty("topic");
     String spokenLanguage = (String)entity.getProperty("spokenLanguage");
     String programmingLanguage = (String)entity.getProperty("programmingLanguage");

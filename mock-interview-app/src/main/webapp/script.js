@@ -16,9 +16,9 @@ async function getInterviewRequests(language) {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const key = urlParams.get('key');
-    const response;
+    let response;
     if(key != null) {
-        response = await fetch('/data?key=" + key');
+        response = await fetch('/data?key=' + key);
     }
     else {
         response = await fetch('/data');
@@ -39,12 +39,12 @@ async function getInterviewRequests(language) {
             timesAvailable += time + " ";
         }
         html += `<p><b>Time Availability:</b> ${timesAvailable}</p>`;
+
+        html += `<a href="InterviewRequestDetails.html?key=${listing.key}">Read More</a>`;
         html += `</div>`;
     }
     document.getElementById('interview-listings').innerHTML = html;
 }
-
-
 
 async function login() {
   const response = await fetch('/login');
@@ -60,7 +60,6 @@ async function login() {
     hidelogin.style.display= "none";
    }
 }
-
 
 function getSections() {
    $("#header-placeholder").load("header.html");
