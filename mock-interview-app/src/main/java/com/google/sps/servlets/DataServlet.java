@@ -51,6 +51,12 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     
+
+
+  
+     
+
+
     List<InterviewRequest> interviews = new ArrayList<>();
 
     for (Entity entity : results.asIterable()) {
@@ -69,6 +75,7 @@ public class DataServlet extends HttpServlet {
     response.setContentType("application/json;");
     response.getWriter().println(getJson(interviews));
   }
+  
   
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

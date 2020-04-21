@@ -15,6 +15,7 @@
 async function getInterviewRequests(language) {
     const response = await fetch('/data');
     const listings = await response.json();
+    
     let html = "";
     for(const listing of listings) {
         if(language != "None" && listing.programmingLanguage != language)
@@ -36,6 +37,15 @@ async function getInterviewRequests(language) {
 
     }
 
+async function getAlert(){
+     const response = await fetch('/alert');
+     const text = await response.text();
+     console.log(text);
+     if(text.includes("1")){
+        alert("You already have an interview coming up! Only can confirm one interview at a time.");
+     }
+     
+}
 
 
 async function login() {
