@@ -92,8 +92,8 @@ public class DataServlet extends HttpServlet {
         response.sendRedirect("/InterviewRequestDetails.html?key=" + key);
         return;
     }
-    
-    response.sendRedirect("interviews.html");
+
+    response.sendRedirect("/interviews.html");
   }
 
   public void allEntities(PreparedQuery results, List<InterviewRequest> interviews) {
