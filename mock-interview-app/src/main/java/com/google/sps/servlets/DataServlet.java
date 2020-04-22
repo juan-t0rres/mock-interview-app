@@ -87,9 +87,13 @@ public class DataServlet extends HttpServlet {
     }
     if(!isfound){
         Entity newInterviewRequest = getInterviewEntity(request);
-        datastore.put(newInterviewRequest);    
+        datastore.put(newInterviewRequest); 
+        String key = KeyFactory.keyToString(newInterviewRequest.getKey());
+        response.sendRedirect("/InterviewRequestDetails.html?key=" + key);
+        return;
     }
-    response.sendRedirect("/interviews.html");
+    
+    response.sendRedirect("interviews.html");
   }
 
   public void allEntities(PreparedQuery results, List<InterviewRequest> interviews) {
