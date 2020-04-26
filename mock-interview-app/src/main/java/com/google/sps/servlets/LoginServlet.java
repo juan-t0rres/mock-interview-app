@@ -26,22 +26,22 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginServlet extends HttpServlet {
 
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html");
-
     UserService userService = UserServiceFactory.getUserService();
-    if (userService.isUserLoggedIn()) {
-      String userEmail = userService.getCurrentUser().getEmail();
-      String urlToRedirectToAfterUserLogsOut = "/";
-      String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
 
-      response.getWriter().println("Hello " + userEmail + "!");
-      response.getWriter().println("<p>Logout <a href=\"" + logoutUrl + "\">here</a>.</p>");
-    }else {
-      String urlToRedirectToAfterUserLogsIn = "/redirect";
-      String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
+    boolean loggedIn = userService.isUserLoggedIn();
+    String url = loggedIn ? userService.createLogoutURL("/") : userService.createLoginURL("/redirect");
+    LoginResponse lr = new LoginResponse(loggedIn,url);
 
-      response.getWriter().println("Hello stranger please sign in to request an interview.");
-      response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
-    }
+    response.setContentType("application/json;");
+    response.getWriter().println((new Gson()).toJson(lr));
   }
+}
+
+class LoginResponse {
+  public boolean loggedIn;
+  public String url;
+  public LoginResponse(boolean loggedIn, String url) {
+    this.loggedIn = loggedIn;
+    this.url = url;
   }
+}
