@@ -52,18 +52,19 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     
-    List<InterviewRequest> interviews = new ArrayList<>();
     String key = request.getParameter("key");
-    if (key != null) {
-        // Handle request for specific entity
-        this.specificEntity(datastore, key, interviews);
-    } else {
-        // Handle request for all entities
-        this.allEntities(results, interviews);
-    }
     
     response.setContentType("application/json;");
-    response.getWriter().println(getJson(interviews));
+    if (key != null) {
+        // Handle request for specific entity
+        response.getWriter().println(getJson(specificEntity(datastore, key)));
+    } 
+    else {
+        // Handle request for all entities
+        List<InterviewRequest> interviews = new ArrayList<>();
+        allEntities(results, interviews);
+        response.getWriter().println(getJson(interviews));
+    }
   }
   
   @Override
@@ -80,12 +81,12 @@ public class DataServlet extends HttpServlet {
     PreparedQuery pq = datastore.prepare(q);
     for (Entity result : pq.asIterable())
     { 
-      if(userEmail.equals(result.getProperty("username"))){
+      if (userEmail.equals(result.getProperty("username"))) {
         isfound = true;
         break;
       }
     }
-    if(!isfound){
+    if (!isfound){
         Entity newInterviewRequest = getInterviewEntity(request);
         datastore.put(newInterviewRequest); 
         String key = KeyFactory.keyToString(newInterviewRequest.getKey());
@@ -98,6 +99,8 @@ public class DataServlet extends HttpServlet {
 
   public void allEntities(PreparedQuery results, List<InterviewRequest> interviews) {
     for (Entity entity : results.asIterable()) {
+        String name = (String)entity.getProperty("name");
+        String intro = (String)entity.getProperty("intro");
         String topic = (String)entity.getProperty("topic");
         String spokenLanguage = (String)entity.getProperty("spokenLanguage");
         String programmingLanguage = (String)entity.getProperty("programmingLanguage");
@@ -107,11 +110,11 @@ public class DataServlet extends HttpServlet {
         String key = KeyFactory.keyToString(entity.getKey());
         long timestamp = (long)entity.getProperty("timestamp");
 
-        interviews.add(new InterviewRequest(topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,timesAvailable,key,timestamp));
+        interviews.add(new InterviewRequest(name,intro,topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,timesAvailable,key,timestamp));
     }
   }
 
-  public void specificEntity(DatastoreService datastore, String key, List<InterviewRequest> interviews) {
+  public InterviewRequest specificEntity(DatastoreService datastore, String key) {
     Key interviewKey = KeyFactory.stringToKey(key);
     Entity entity;
     try {
@@ -119,9 +122,10 @@ public class DataServlet extends HttpServlet {
     }
     catch(Exception e) {
         System.err.println("Error: Cannot find interview listing with given key " + key);
-        return;
+        return null;
     }
-
+    String name = (String)entity.getProperty("name");
+    String intro = (String)entity.getProperty("intro");
     String topic = (String)entity.getProperty("topic");
     String spokenLanguage = (String)entity.getProperty("spokenLanguage");
     String programmingLanguage = (String)entity.getProperty("programmingLanguage");
@@ -130,11 +134,13 @@ public class DataServlet extends HttpServlet {
     List<String> timesAvailable = (List<String>)entity.getProperty("timesAvailable");
     long timestamp = (long)entity.getProperty("timestamp");
 
-    interviews.add(new InterviewRequest(topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,timesAvailable,key,timestamp));
+    return new InterviewRequest(name,intro,topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,timesAvailable,key,timestamp);
   }
 
   public Entity getInterviewEntity(HttpServletRequest request) {
     UserService userService = UserServiceFactory.getUserService();
+    String name = request.getParameter("name");
+    String intro = request.getParameter("intro");
     String topic = request.getParameter("topic");
     String spokenLanguage = request.getParameter("spokenLanguage");
     String programmingLanguage = request.getParameter("programmingLanguage");
@@ -145,6 +151,8 @@ public class DataServlet extends HttpServlet {
     List<String> timesAvailable = Arrays.asList(times);
     String username = userService.getCurrentUser().getEmail();
     Entity interviewEntity = new Entity("InterviewRequest");
+    interviewEntity.setProperty("name",name);
+    interviewEntity.setProperty("intro",intro);
     interviewEntity.setProperty("topic",topic);
     interviewEntity.setProperty("spokenLanguage",spokenLanguage);
     interviewEntity.setProperty("programmingLanguage",programmingLanguage);
@@ -159,10 +167,14 @@ public class DataServlet extends HttpServlet {
   public String getJson(List<InterviewRequest> interviews) {
     return (new Gson()).toJson(interviews);
   }
+
+  public String getJson(InterviewRequest interview) {
+    return (new Gson()).toJson(interview);
+  }
 }
 
 class InterviewRequest {
-    public String topic, spokenLanguage, programmingLanguage;
+    public String name, intro, topic, spokenLanguage, programmingLanguage;
     // URLs will tentatively be stored as strings until we decide on a better class to use
     public String communicationURL, environmentURL;
     // Times will tentatively be stored as strings until we decide on a better class to use
@@ -170,8 +182,10 @@ class InterviewRequest {
     public String key;
     public long timestamp;
 
-    public InterviewRequest(String topic, String spokenLanguage, String programmingLanguage, String communicationURL, String environmentURL, 
+    public InterviewRequest(String name, String intro, String topic, String spokenLanguage, String programmingLanguage, String communicationURL, String environmentURL, 
                             List<String> timesAvailable, String key, long timestamp) {
+        this.name = name;
+        this.intro = intro;
         this.topic = topic;
         this.spokenLanguage = spokenLanguage;
         this.programmingLanguage = programmingLanguage;

@@ -13,7 +13,13 @@
   <body onload="getSections();getAlert();">
         <div id="header-placeholder"></div>
         <div id="content">
+            <h3>Request an interview here!</h3>
+            <br>
             <form action="/data" method="POST">
+                <label for="name">Enter your name:</label>
+                <input type="text" name="name"/> <br><br>
+                <label for="intro">Give us a very brief introduction of who you are for people to see:</label>
+                <textarea name="intro" rows="8" cols="70"></textarea> <br><br>
                 <label for="interview_topic">Enter the topic you would like to interview on:</label>
                 <input type="text" list="interview_topic" name="topic"/>
                 <datalist id="interview_topic">
@@ -46,7 +52,7 @@
                 <label for="environment_link">Paste a link to a pair programming environment for your interview:</label>
                 <input type="text" id="environment_link" name="environmentURL"/> <br/><br/>
 
-                <label for="time_availability">Choose your time availability to interview:</label> </br></br>
+                <label for="time_availability">Choose your time availability to interview:</label>
                 <div id="dynamicInput">
                     Entry 1</br><input type="datetime-local" id="time_availability" name="time_availability" min="2020-01-01T00:00" max="2020-12-31T00:00">
                 </div>
