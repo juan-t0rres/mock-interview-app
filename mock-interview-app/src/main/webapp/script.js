@@ -48,22 +48,22 @@ async function getInterviewRequests(language) {
 
 async function login() {
   const response = await fetch('/login');
-  const user = await response.text();
-  const username = user.split("<p");
-  const hidelogin = document.getElementById("hidelogin");
-  const showlogout = document.getElementById("showlogout");
-  if (username[0].includes("stranger please sign in")){
-    hidelogin.style.display = "block";
-    showlogout.style.display ="none";
-   }else{
-    showlogout.style.display= "block";
-    hidelogin.style.display= "none";
-   }
+  const loginResponse = await response.json();
+  
+  const buttonText = loginResponse.loggedIn ? 'Logout' : 'Login';
+  const url = loginResponse.url;
+
+  $("#home-button").text(buttonText);
+  $("#home-button").attr("href",url);
+  console.log(url);
 }
 
-function getSections() {
-   $("#header-placeholder").load("header.html");
-   $("#footer-placeholder").load("footer.html");
+async function getSections() {
+  const response = await fetch('/login');
+  const loginResponse = await response.json();
+  if (loginResponse.loggedIn)
+    $("#header-placeholder").load("header.html");
+  $("#footer-placeholder").load("footer.html");
 }
 
 var counter = 1;
