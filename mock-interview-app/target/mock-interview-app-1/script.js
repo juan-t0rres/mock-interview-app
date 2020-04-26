@@ -13,7 +13,16 @@
 // limitations under the License.
 
 async function getInterviewRequests(language) {
-    const response = await fetch('/data');
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const key = urlParams.get('key');
+    let response;
+    if(key != null) {
+        response = await fetch('/data?key=' + key);
+    }
+    else {
+        response = await fetch('/data');
+    }
     const listings = await response.json();
     let html = "";
     for(const listing of listings) {
@@ -30,13 +39,12 @@ async function getInterviewRequests(language) {
             timesAvailable += time + " ";
         }
         html += `<p><b>Time Availability:</b> ${timesAvailable}</p>`;
+
+        html += `<a href="InterviewRequestDetails.html?key=${listing.key}">Read More</a>`;
         html += `</div>`;
     }
     document.getElementById('interview-listings').innerHTML = html;
-
-    }
-
-
+}
 
 async function login() {
   const response = await fetch('/login');
@@ -52,7 +60,6 @@ async function login() {
     hidelogin.style.display= "none";
    }
 }
-
 
 function getSections() {
    $("#header-placeholder").load("header.html");
@@ -72,4 +79,13 @@ function addInput(divName){
           counter++;
      }
 }  
+
+async function getAlert(){
+     const response = await fetch('/alert');
+     const text = await response.text();
+     console.log(text);
+     if(text.includes("1")){
+        alert("You already have an interview coming up! Only can confirm one interview at a time.");
+     }    
+}
 

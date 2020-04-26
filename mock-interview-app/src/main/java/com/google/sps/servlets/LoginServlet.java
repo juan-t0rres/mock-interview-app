@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
       response.getWriter().println("Hello " + userEmail + "!");
       response.getWriter().println("<p>Logout <a href=\"" + logoutUrl + "\">here</a>.</p>");
     }else {
-      String urlToRedirectToAfterUserLogsIn = "/InterviewRequestForm.html";
+      String urlToRedirectToAfterUserLogsIn = "/redirect";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
 
       response.getWriter().println("Hello stranger please sign in to request an interview.");
