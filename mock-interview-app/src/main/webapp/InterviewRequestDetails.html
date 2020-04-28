@@ -11,12 +11,19 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="getSections();getInterviewRequests(&quot;None&quot;);">
+  <body onload="getSections();getInterviewDetails();">
     <div id="header-placeholder"></div>
     <div class="container" id="content">
         <h1>Interview Request Details</h1>
-        
-        <div id="interview-listings">
+        <div class="details">
+          <p><b>Name:</b> <span id="listing-name"></span></p>
+          <p><b>Spoken Language:</b> <span id="listing-spoken"></span></p>
+          <p><b>Programming Language:</b> <span id="listing-programming"></span></p>
+          <p><b>Preferred Topic (If Any):</b> <span id="listing-topic"></span></p>
+          <p id="listing-intro"></p>
+          <p><b>Times Available: </b></p>
+          <div id="times-available"></div>
+          <a class="btn btn-primary btn-sm" href="#">Interview This Person</a>
         </div>
     </div>
     <div id="footer-placeholder"></div>
