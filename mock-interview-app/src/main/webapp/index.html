@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Mock Interview App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2:wght@500&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
@@ -13,12 +14,13 @@
   <body onload="login();getSections();">
     <div id="header-placeholder"></div>
     <div id="content">
-      <h1>Mock Interview</h1>
-
-      <p> Hello! Welcome to our mock interview site. When you login in, you will be able to request 
-          an interview with a fellow peer! You can also hold interviews if you want to hellp your fellow peers!
-      </p>
-      <a href="#" id="home-button" class="btn btn-primary"></a>
+      <div class="jumbotron hero">
+        <center><h1 class="display-6">Welcome to <span id="logo">match mocker</span></h1></center>
+        <p class="lead">Match Mocker is a service that connects software engineers together to practice for coding interviews.</p>
+        <hr class="my-4">
+        <p>Once you log in, you'll be able to create a listing for a mock interview. We also suggest practicing as the interviewer as it can also be very beneficial.</p>
+        <a href="#" id="home-button" class="btn btn-primary"></a>
+      </div>
     </div>
     <div id="footer-placeholder"></div>
   </body>
