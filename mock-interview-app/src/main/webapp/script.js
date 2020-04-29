@@ -71,8 +71,24 @@ async function getSections() {
   const response = await fetch('/login');
   const loginResponse = await response.json();
   if (loginResponse.loggedIn)
-    $("#header-placeholder").load("header.html");
+    getHeader();
+
   $("#footer-placeholder").load("footer.html");
+}
+
+function getHeader() {
+  $("#header-placeholder").load('header.html', function(){
+    let path = window.location.pathname;
+    let page = path.substr(1,path.indexOf('.')-1);
+    if (page == 'index')
+      $("#index-link").css('color','var(--secondary-color)');  
+    
+    if (page == 'interviews')
+      $("#listings-link").css('color','var(--secondary-color)');  
+    
+    if(page == 'InterviewRequestForm')
+      $("#request-link").css('color','var(--secondary-color)');  
+  });
 }
 
 var counter = 1;
