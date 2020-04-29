@@ -111,6 +111,7 @@ async function getAlert(){
      console.log(text);
      if(text.includes("1")){
         alert("You already have an interview coming up! Only can confirm one interview at a time.");
+        window.location.pathname = '/interviews.html';
      }    
 }
 
