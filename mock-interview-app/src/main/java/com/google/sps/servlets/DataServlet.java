@@ -35,6 +35,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
@@ -74,31 +76,26 @@ public class DataServlet extends HttpServlet {
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         return;
     }
+    
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    String userEmail = userService.getCurrentUser().getEmail();
-    boolean isfound = false; 
-    Query q = new Query("InterviewRequest"); 
-    PreparedQuery pq = datastore.prepare(q);
-    for (Entity result : pq.asIterable())
-    { 
-      if (userEmail.equals(result.getProperty("username"))) {
-        isfound = true;
-        break;
-      }
-    }
-    if (!isfound){
-        Entity newInterviewRequest = getInterviewEntity(request);
-        datastore.put(newInterviewRequest); 
-        String key = KeyFactory.keyToString(newInterviewRequest.getKey());
-        response.sendRedirect("/InterviewRequestDetails.html?key=" + key);
+
+    if(AlertServlet.checkOpenRequest()) {
+        response.sendRedirect("/interviews.html");
         return;
     }
 
-    response.sendRedirect("/interviews.html");
+    Entity newInterviewRequest = getInterviewEntity(request);
+    datastore.put(newInterviewRequest); 
+    String key = KeyFactory.keyToString(newInterviewRequest.getKey());
+    response.sendRedirect("/InterviewRequestDetails.html?key=" + key);
   }
 
   public void allEntities(PreparedQuery results, List<InterviewRequest> interviews) {
     for (Entity entity : results.asIterable()) {
+        List<String> timesAvailable = (List<String>)entity.getProperty("timesAvailable");
+        if(!checkForOpenTime(timesAvailable))
+            continue;
+
         String name = (String)entity.getProperty("name");
         String intro = (String)entity.getProperty("intro");
         String topic = (String)entity.getProperty("topic");
@@ -106,12 +103,24 @@ public class DataServlet extends HttpServlet {
         String programmingLanguage = (String)entity.getProperty("programmingLanguage");
         String communicationURL = (String)entity.getProperty("communicationURL");
         String environmentURL = (String)entity.getProperty("environmentURL");
-        List<String> timesAvailable = (List<String>)entity.getProperty("timesAvailable");
         String key = KeyFactory.keyToString(entity.getKey());
         long timestamp = (long)entity.getProperty("timestamp");
 
         interviews.add(new InterviewRequest(name,intro,topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,timesAvailable,key,timestamp));
     }
+  }
+
+  public static boolean checkForOpenTime(List<String> timesAvailable) {
+    LocalDate today = LocalDate.now();
+    for(String str: timesAvailable) {
+        String time = str.replace('T','-');
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
+
+        LocalDate datetime = LocalDate.parse(time, f);
+        if (datetime.isAfter(today))
+            return true;
+    }
+    return false;
   }
 
   public InterviewRequest specificEntity(DatastoreService datastore, String key) {
@@ -193,7 +202,7 @@ class InterviewRequest {
         this.environmentURL = environmentURL;
         this.timesAvailable = timesAvailable;  
         this.key = key;
-        this.timestamp = timestamp; 
+        this.timestamp = timestamp;
     }
 }
    

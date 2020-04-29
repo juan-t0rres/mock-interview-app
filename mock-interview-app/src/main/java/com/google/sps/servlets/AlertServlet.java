@@ -31,24 +31,30 @@ public class AlertServlet extends HttpServlet {
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         return;
     }
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    String userEmail = userService.getCurrentUser().getEmail();
-    boolean isfound = false; 
-    Query q = new Query("InterviewRequest"); 
-    PreparedQuery pq = datastore.prepare(q);
-    for (Entity result : pq.asIterable())
-    { 
-      if(userEmail.equals(result.getProperty("username"))){
-          isfound = true;
-        break;
-      }
-    }
-    if(isfound){
+
+    if(checkOpenRequest()) {
         response.setContentType("text/html");
         String number = "1";
         response.getWriter().write(number);
     }
-    
+  }
+
+  // Function that returns whether or not the current user has a request with an available time (not in the past).
+  public static boolean checkOpenRequest() {
+    UserService userService = UserServiceFactory.getUserService();
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    String userEmail = userService.getCurrentUser().getEmail();
+    Query q = new Query("InterviewRequest"); 
+    PreparedQuery pq = datastore.prepare(q);
+    for (Entity result : pq.asIterable())
+    { 
+      if(userEmail.equals(result.getProperty("username"))) {  
+        List<String> times = (List<String>)result.getProperty("timesAvailable");
+        if(DataServlet.checkForOpenTime(times))
+          return true;
+      }
+    }
+    return false;
   }
  
 }
