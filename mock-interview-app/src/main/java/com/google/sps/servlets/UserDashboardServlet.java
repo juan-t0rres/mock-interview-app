@@ -30,7 +30,7 @@ public class UserDashboardServlet extends HttpServlet {
 
     String userEmail = userService.getCurrentUser().getEmail();
     Filter userFilter = new FilterPredicate("username", FilterOperator.EQUAL, userEmail);
-	Query query = new Query("InterviewRequest").setFilter(userFilter).addSort("timestamp", SortDirection.DESCENDING);
+	  Query query = new Query("InterviewRequest").setFilter(userFilter).addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     
@@ -40,7 +40,7 @@ public class UserDashboardServlet extends HttpServlet {
     String key = AlertServlet.getOpenRequest();
 
     if (key != null)
-    	pending = DataServlet.specificEntity(datastore,key);
+    	pending = DataServlet.specificEntity(datastore,key,userEmail).interviewRequest;
 
     for (Entity entity : results.asIterable()) {
         String entityKey = KeyFactory.keyToString(entity.getKey());

@@ -48,21 +48,44 @@ async function getInterviewDetails() {
       alert('Error: No key specified.');
       return;
     }
+
     const response = await fetch('/data?key=' + key);
-    const listing = await response.json();
-    console.log(listing);
+    const detailsResponse = await response.json();
+    const listing = detailsResponse.interviewRequest;
+    const hideForm = detailsResponse.hideForm;
+
     $("#listing-name").text(listing.name);
     $("#listing-spoken").text(listing.spokenLanguage);
     $("#listing-programming").text(listing.programmingLanguage);
     $("#listing-topic").text(listing.topic);
     $("#listing-intro").text(listing.intro);
 
-    let timesAvailable = "";
-    for (const time of listing.timesAvailable)
-      timesAvailable += `<p>${time}</p>`;
+    let today = new Date();
+    for (const time of listing.timesAvailable) {
+      let date = new Date(time);
+      // don't display options that are no longer valid
+      if (date < today)
+        continue;
+      
+      if (hideForm) {
+        $("#times").append(`<p>${formatDate(date)}</p>`);
+      }
+      else {
+        $("#time-form").append('<input type="checkbox" class="form-check-input" value="${time}" name="time-checkbox" />');
+        $("#time-form").append(`<label class="form-check-label" for="time-checkbox">${formatDate(date)}</label><br>`);
+      }
+    }
 
-    $("#times-available").html(timesAvailable);
+    if (!hideForm) {
+      $("#time-form").append(`<br><input class="btn btn-primary btn-sm" type="submit" value="Interview This Person" />`);
+      $("#time-form").show();
+    }
 
+
+    // only allow one checkbox to be checked
+    $('input[type="checkbox"]').on('change', function() {
+      $(this).siblings('input[type="checkbox"]').prop('checked', false);
+    });
 }
 
 async function login() {
