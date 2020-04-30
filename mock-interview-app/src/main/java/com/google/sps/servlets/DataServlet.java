@@ -16,7 +16,7 @@ package com.google.sps.servlets;
 import com.google.gson.Gson;
 import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.datastore.Query.*;
-
+import com.google.appengine.api.mail.BounceNotification.Details;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
@@ -53,7 +53,8 @@ public class DataServlet extends HttpServlet {
     response.setContentType("application/json;");
     if (key != null) {
         // Handle request for specific entity
-        response.getWriter().println(getJson(specificEntity(datastore, key)));
+        String userEmail = userService.getCurrentUser().getEmail();
+        response.getWriter().println(getJson(specificEntity(datastore, key, userEmail)));
     } 
     else {
         // Handle request for all entities
@@ -106,7 +107,7 @@ public class DataServlet extends HttpServlet {
     }
   }
 
-  public static InterviewRequest specificEntity(DatastoreService datastore, String key) {
+  public static DetailsResponse specificEntity(DatastoreService datastore, String key, String userEmail) {
     Key interviewKey = KeyFactory.stringToKey(key);
     Entity entity;
     try {
@@ -128,7 +129,9 @@ public class DataServlet extends HttpServlet {
     boolean closed = (boolean)entity.getProperty("closed");
     long timestamp = (long)entity.getProperty("timestamp");
 
-    return new InterviewRequest(name,intro,topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,timesAvailable,key,username,closed,timestamp);
+    boolean hideForm = userEmail.equals(username) || closed;
+    InterviewRequest interviewRequest = new InterviewRequest(name,intro,topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,timesAvailable,key,username,closed,timestamp);
+    return new DetailsResponse(interviewRequest,hideForm);
   }
 
   public Entity getInterviewEntity(HttpServletRequest request) {
@@ -163,8 +166,18 @@ public class DataServlet extends HttpServlet {
     return (new Gson()).toJson(interviews);
   }
 
-  public String getJson(InterviewRequest interview) {
-    return (new Gson()).toJson(interview);
+  public String getJson(DetailsResponse detailsResponse) {
+    return (new Gson()).toJson(detailsResponse);
+  }
+}
+
+class DetailsResponse {
+  InterviewRequest interviewRequest;
+  boolean hideForm;
+
+  public DetailsResponse(InterviewRequest interviewRequest, boolean hideForm) {
+    this.interviewRequest = interviewRequest;
+    this.hideForm = hideForm;
   }
 }
    
