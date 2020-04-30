@@ -14,12 +14,21 @@
   <body onload="login();getSections();">
     <div id="header-placeholder"></div>
     <div id="content">
-      <div class="jumbotron hero">
+      <div class="jumbotron hero" id="loggedOut" style="display: none;">
         <center><h1 class="display-6">Welcome to <span id="logo">match mocker</span></h1></center>
         <p class="lead">Match Mocker is a service that connects software engineers together to practice for coding interviews.</p>
         <hr class="my-4">
         <p>Once you log in, you'll be able to create a listing for a mock interview. We also suggest practicing as the interviewer as it can also be very beneficial.</p>
-        <a href="#" id="home-button" class="btn btn-primary"></a>
+        <a href="#" id="login-button" class="btn btn-primary">Login</a>
+      </div>
+      <div class="container" id="loggedIn" style="display: none;">
+        <h2>Welcome, <span id="username"></span> <a style="float: right;" id="logout-button" class="btn btn-danger">Logout</a></h2>
+        <hr class="my-4">
+        <h3>Pending Mock Interview:</h3>
+        <div id="pending-listing"></div>
+        <h3>Past Mock Interview Listings:</h3>
+        <div id="past-listings"></div>
+        <br/>
       </div>
     </div>
     <div id="footer-placeholder"></div>

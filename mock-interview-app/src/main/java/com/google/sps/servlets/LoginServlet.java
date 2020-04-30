@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
 
     boolean loggedIn = userService.isUserLoggedIn();
-    String url = loggedIn ? userService.createLogoutURL("/") : userService.createLoginURL("/redirect");
+    String url = loggedIn ? userService.createLogoutURL("/") : userService.createLoginURL("/");
     LoginResponse lr = new LoginResponse(loggedIn,url);
 
     response.setContentType("application/json;");

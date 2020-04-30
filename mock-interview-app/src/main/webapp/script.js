@@ -19,15 +19,25 @@ async function getInterviewRequests(language) {
     for(const listing of listings) {
         if(language != "None" && listing.programmingLanguage != language)
             continue;
-        html += `<div class="listing">`;
-        html += `<p><b>Name:</b> ${listing.name}</p>`;
-        html += `<p><b>Spoken Language:</b> ${listing.spokenLanguage}</p>`;
-        html += `<p><b>Programming Language:</b> ${listing.programmingLanguage}</p>`;
-        html += `<p><b>Preferred Topic (If Any):</b> ${listing.topic}</p>`;
-        html += `<a class="btn btn-primary btn-sm" href="InterviewRequestDetails.html?key=${listing.key}">Read More</a>`;
-        html += `</div>`;
+        html += createListing(listing, false);
     }
     document.getElementById('interview-listings').innerHTML = html;
+}
+
+function createListing(listing,dashboard) {
+  let html = `<div class="listing">`;
+  html += `<p><b>Name:</b> ${listing.name}</p>`;
+  html += `<p><b>Spoken Language:</b> ${listing.spokenLanguage}</p>`;
+  html += `<p><b>Programming Language:</b> ${listing.programmingLanguage}</p>`;
+  html += `<p><b>Preferred Topic (If Any):</b> ${listing.topic}</p>`;
+  html += `<a class="btn btn-primary btn-sm" href="InterviewRequestDetails.html?key=${listing.key}">View Listing</a>`;
+  if (dashboard) {
+    html += `<form action="/cancel?key=${listing.key}" method="POST" style="float: right;">`;
+    html += `<input class="btn btn-danger btn-sm" type="submit" value="Cancel" />`;
+    html += `</form>`;
+  }
+  html += `</div>`;
+  return html;
 }
 
 async function getInterviewDetails() {
@@ -58,13 +68,39 @@ async function getInterviewDetails() {
 async function login() {
   const response = await fetch('/login');
   const loginResponse = await response.json();
-  
-  const buttonText = loginResponse.loggedIn ? 'Logout' : 'Login';
   const url = loginResponse.url;
 
-  $("#home-button").text(buttonText);
-  $("#home-button").attr("href",url);
-  console.log(url);
+  if (loginResponse.loggedIn) {
+    $("#loggedOut").hide();
+    $("#loggedIn").show();
+    $("#logout-button").attr("href",url);
+
+    const userResponse = await fetch('/user');
+    const userDashboard = await userResponse.json();
+    console.log(userDashboard);
+    const username = userDashboard.username;
+    $("#username").text(username.substr(0,username.indexOf('@')));
+
+    if (userDashboard.pending == null)
+      $("#pending-listing").html("<p>You currently have no open interview requests.</p>");
+    else
+      $("#pending-listing").html(createListing(userDashboard.pending,true));
+
+    if (userDashboard.past.length == 0) {
+      $("#past-listings").html("<p>You have no past interview requests.</p>");
+    }
+    else {
+      let html = "";
+      for (const listing of userDashboard.past)
+        html += createListing(listing,false);
+      $("#past-listings").html(html);
+    }
+  }
+  else {
+    $("#loggedOut").show();
+    $("#loggedIn").hide();
+    $("#login-button").attr("href",url);
+  }
 }
 
 async function getSections() {
@@ -76,11 +112,11 @@ async function getSections() {
   $("#footer-placeholder").load("footer.html");
 }
 
-function getHeader() {
-  $("#header-placeholder").load('header.html', function(){
+async function getHeader() {
+  $("#header-placeholder").load('header.html', async function(){
     let path = window.location.pathname;
     let page = path.substr(1,path.indexOf('.')-1);
-    if (page == 'index')
+    if (page == 'index' || page == '')
       $("#index-link").css('color','var(--secondary-color)');  
     
     if (page == 'interviews')
@@ -88,6 +124,15 @@ function getHeader() {
     
     if(page == 'InterviewRequestForm')
       $("#request-link").css('color','var(--secondary-color)');  
+
+    const response = await fetch('/alert');
+    const text = await response.text();
+
+    if(text.includes('1'))
+      $("#request-link").hide();
+    else
+      $("#request-link").show();
+
   });
 }
 
