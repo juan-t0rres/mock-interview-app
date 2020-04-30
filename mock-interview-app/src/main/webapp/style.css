@@ -73,6 +73,10 @@ body {
 	background-color: var(--main-color);
 }
 
+#time-form {
+  margin-left: 20px;
+}
+
 /* Taken from hover.css */
 .hvr-outline-in {
   display: inline-block;

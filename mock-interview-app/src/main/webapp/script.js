@@ -50,19 +50,26 @@ async function getInterviewDetails() {
     }
     const response = await fetch('/data?key=' + key);
     const listing = await response.json();
-    console.log(listing);
     $("#listing-name").text(listing.name);
     $("#listing-spoken").text(listing.spokenLanguage);
     $("#listing-programming").text(listing.programmingLanguage);
     $("#listing-topic").text(listing.topic);
     $("#listing-intro").text(listing.intro);
 
-    let timesAvailable = "";
-    for (const time of listing.timesAvailable)
-      timesAvailable += `<p>${time}</p>`;
+    let today = new Date();
+    for (const time of listing.timesAvailable) {
+      let date = new Date(time);
+      // don't display options that are no longer valid
+      if (date < today)
+        continue;
+      $("#time-form").append('<input type="checkbox" class="form-check-input" value="${time}" name="time-checkbox" />');
+      $("#time-form").append(`<label class="form-check-label" for="time-checkbox">${date.toUTCString()}</label><br>`);
+    }
 
-    $("#times-available").html(timesAvailable);
-
+    // only allow one checkbox to be checked
+    $('input[type="checkbox"]').on('change', function() {
+      $(this).siblings('input[type="checkbox"]').prop('checked', false);
+    });
 }
 
 async function login() {
