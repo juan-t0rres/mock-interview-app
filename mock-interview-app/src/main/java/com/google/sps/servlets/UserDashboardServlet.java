@@ -44,6 +44,9 @@ public class UserDashboardServlet extends HttpServlet {
 
     for (Entity entity : results.asIterable()) {
         String entityKey = KeyFactory.keyToString(entity.getKey());
+
+        // If this listing is the key found from the current open request,
+        // then we skip it because we don;t want to add it to the "past" list.
         if (entityKey.equals(key))
         	continue;
 
@@ -57,9 +60,11 @@ public class UserDashboardServlet extends HttpServlet {
         List<String> timesAvailable = (List<String>)entity.getProperty("timesAvailable");
         String username = (String)entity.getProperty("username");
         boolean closed = (boolean)entity.getProperty("closed");
+        boolean matched = (boolean)entity.getProperty("matched");
         long timestamp = (long)entity.getProperty("timestamp");
 
-        past.add(new InterviewRequest(name,intro,topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,timesAvailable,entityKey,username,closed,timestamp));
+        past.add(new InterviewRequest(name,intro,topic,spokenLanguage,programmingLanguage,communicationURL,
+        environmentURL,timesAvailable,entityKey,username,closed,matched,timestamp));
     }
     
     response.setContentType("application/json;");
