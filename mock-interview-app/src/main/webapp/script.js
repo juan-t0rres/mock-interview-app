@@ -21,7 +21,8 @@ async function getInterviewRequests(language) {
             continue;
         html += createListing(listing, false);
     }
-    document.getElementById('interview-listings').innerHTML = html;
+    $("#interview-listings").html(html);
+    $("#content").show();
 }
 
 function createListing(listing,dashboard) {
@@ -94,8 +95,6 @@ async function login() {
   const url = loginResponse.url;
 
   if (loginResponse.loggedIn) {
-    $("#loggedOut").hide();
-    $("#loggedIn").show();
     $("#logout-button").attr("href",url);
 
     const userResponse = await fetch('/user');
@@ -118,11 +117,11 @@ async function login() {
         html += createListing(listing,false);
       $("#past-listings").html(html);
     }
+    $("#loggedIn").show();
   }
   else {
-    $("#loggedOut").show();
-    $("#loggedIn").hide();
     $("#login-button").attr("href",url);
+    $("#loggedOut").show();
   }
 }
 
@@ -151,9 +150,7 @@ async function getHeader() {
     const response = await fetch('/alert');
     const text = await response.text();
 
-    if(text.includes('1'))
-      $("#request-link").hide();
-    else
+    if(!text.includes('1'))
       $("#request-link").show();
 
   });
