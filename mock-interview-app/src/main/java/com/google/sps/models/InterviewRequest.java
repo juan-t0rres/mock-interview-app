@@ -1,6 +1,7 @@
 package com.google.sps.models;
 import java.util.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class InterviewRequest {
@@ -11,10 +12,10 @@ public class InterviewRequest {
     public List<String> timesAvailable;
     public String key;
     public long timestamp;
-    public boolean closed;
+    public boolean closed,matched;
 
     public InterviewRequest(String name, String intro, String topic, String spokenLanguage, String programmingLanguage, String communicationURL, String environmentURL, 
-                            List<String> timesAvailable, String key, String username, boolean closed, long timestamp) {
+                            List<String> timesAvailable, String key, String username, boolean closed, boolean matched, long timestamp) {
         this.name = name;
         this.intro = intro;
         this.topic = topic;
@@ -25,18 +26,19 @@ public class InterviewRequest {
         this.timesAvailable = timesAvailable;  
         this.key = key;
         this.username = username;
-        this.timestamp = timestamp;
         this.closed = closed;
+        this.matched = matched;
+        this.timestamp = timestamp;
     }
 
     public static boolean checkForOpenTime(List<String> timesAvailable) {
-        LocalDate today = LocalDate.now();
+        LocalDateTime today = LocalDateTime.now();
         for(String str: timesAvailable) {
             String time = str.replace('T','-');
             DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
 
-            LocalDate datetime = LocalDate.parse(time, f);
-            if (datetime.isAfter(today))
+            LocalDateTime datetime = LocalDateTime.parse(time, f);
+            if (today.isBefore(datetime))
                 return true;
         }
         return false;

@@ -77,6 +77,10 @@ body {
   margin-left: 20px;
 }
 
+.alert {
+  text-align: center;
+}
+
 /* Taken from hover.css */
 .hvr-outline-in {
   display: inline-block;
