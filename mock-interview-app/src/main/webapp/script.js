@@ -68,20 +68,25 @@ async function getInterviewDetails() {
       if (date < today)
         continue;
       
+      let fDate = formatDate(date);
+
       if (hideForm) {
-        $("#times").append(`<p>${formatDate(date)}</p>`);
+        $("#times").append(`<p>${fDate}</p>`);
       }
       else {
-        $("#time-form").append('<input type="checkbox" class="form-check-input" value="${time}" name="time-checkbox" />');
-        $("#time-form").append(`<label class="form-check-label" for="time-checkbox">${formatDate(date)}</label><br>`);
+        $("#time-form").append(`<input type="checkbox" class="form-check-input" value="${fDate}" name="time-checkbox" />`);
+        $("#time-form").append(`<label class="form-check-label" for="time-checkbox">${fDate}</label><br>`);
       }
     }
 
     if (!hideForm) {
       $("#time-form").append(`<br><input class="btn btn-primary btn-sm" type="submit" value="Interview This Person" />`);
+      $("#time-form").attr('action','/match?key='+key);
       $("#time-form").show();
     }
 
+    if (listing.matched)
+      $("#matched").show();
 
     // only allow one checkbox to be checked
     $('input[type="checkbox"]').on('change', function() {
@@ -94,22 +99,34 @@ async function login() {
   const loginResponse = await response.json();
   const url = loginResponse.url;
 
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const matched = urlParams.get('matched');
+
   if (loginResponse.loggedIn) {
     $("#logout-button").attr("href",url);
 
+    // Set up dashboard
     const userResponse = await fetch('/user');
     const userDashboard = await userResponse.json();
     console.log(userDashboard);
     const username = userDashboard.username;
     $("#username").text(username.substr(0,username.indexOf('@')));
-
-    if (userDashboard.pending == null)
-      $("#pending-listing").html("<p>You currently have no open interview requests.</p>");
-    else
+    
+    if (userDashboard.pending == null) {
+      $("#pending-listing").html(`<p>You currently have no open interview requests.</p>`);
+    }
+    else if (userDashboard.pending.matched) {
+      $("#pending-listing").append(`<div class="alert alert-success" role="alert">
+        A match has been found for your mock interview! </div>`);
+      $("#pending-listing").append(createListing(userDashboard.pending,false));
+    }
+    else {
       $("#pending-listing").html(createListing(userDashboard.pending,true));
+    }
 
     if (userDashboard.past.length == 0) {
-      $("#past-listings").html("<p>You have no past interview requests.</p>");
+      $("#past-listings").html(`<p>You have no past interview requests.</p>`);
     }
     else {
       let html = "";
@@ -117,6 +134,19 @@ async function login() {
         html += createListing(listing,false);
       $("#past-listings").html(html);
     }
+    
+    // Add alert if someone came from a match.
+    if (matched != null) {
+      if (matched == 'true') {
+        $("#header-placeholder").append(`<div class="alert alert-success" role="alert">
+          Success! An email confirmation has been sent to you and the interviewee containing the details of the interview. </div>`);
+      }
+      if (matched == 'false') {
+        $("#header-placeholder").append(`<div class="alert alert-danger" role="alert">
+          Server Error: Match unsuccessful.</div>`);
+      }
+    }
+
     $("#loggedIn").show();
   }
   else {

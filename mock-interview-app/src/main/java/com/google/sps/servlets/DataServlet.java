@@ -89,7 +89,8 @@ public class DataServlet extends HttpServlet {
     for (Entity entity : results.asIterable()) {
         List<String> timesAvailable = (List<String>)entity.getProperty("timesAvailable");
         boolean closed = (boolean)entity.getProperty("closed");
-        if(closed || !InterviewRequest.checkForOpenTime(timesAvailable))
+        boolean matched = (boolean)entity.getProperty("matched");
+        if(closed || matched || !InterviewRequest.checkForOpenTime(timesAvailable))
             continue;
 
         String name = (String)entity.getProperty("name");
@@ -103,7 +104,8 @@ public class DataServlet extends HttpServlet {
         String username = (String)entity.getProperty("username");
         long timestamp = (long)entity.getProperty("timestamp");
 
-        interviews.add(new InterviewRequest(name,intro,topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,timesAvailable,key,username,closed,timestamp));
+        interviews.add(new InterviewRequest(name,intro,topic,spokenLanguage,programmingLanguage,
+        communicationURL,environmentURL,timesAvailable,key,username,closed,matched,timestamp));
     }
   }
 
@@ -127,11 +129,15 @@ public class DataServlet extends HttpServlet {
     List<String> timesAvailable = (List<String>)entity.getProperty("timesAvailable");
     String username = (String)entity.getProperty("username");
     boolean closed = (boolean)entity.getProperty("closed");
+    boolean matched = (boolean)entity.getProperty("matched");
     long timestamp = (long)entity.getProperty("timestamp");
 
     boolean hideForm = userEmail.equals(username) || closed;
-    InterviewRequest interviewRequest = new InterviewRequest(name,intro,topic,spokenLanguage,programmingLanguage,communicationURL,environmentURL,timesAvailable,key,username,closed,timestamp);
-    return new DetailsResponse(interviewRequest,hideForm);
+
+    InterviewRequest interviewRequest = new InterviewRequest(name,intro,topic,spokenLanguage,programmingLanguage,
+    communicationURL,environmentURL,timesAvailable,key,username,closed,matched,timestamp);
+
+    return new DetailsResponse(interviewRequest,hideForm,matched);
   }
 
   public Entity getInterviewEntity(HttpServletRequest request) {
@@ -159,6 +165,7 @@ public class DataServlet extends HttpServlet {
     interviewEntity.setProperty("timestamp",System.currentTimeMillis());
     interviewEntity.setProperty("username",username);
     interviewEntity.setProperty("closed",false);
+    interviewEntity.setProperty("matched", false);
     return interviewEntity;
   }
 
@@ -173,11 +180,12 @@ public class DataServlet extends HttpServlet {
 
 class DetailsResponse {
   InterviewRequest interviewRequest;
-  boolean hideForm;
+  boolean hideForm, matched;
 
-  public DetailsResponse(InterviewRequest interviewRequest, boolean hideForm) {
+  public DetailsResponse(InterviewRequest interviewRequest, boolean hideForm, boolean matched) {
     this.interviewRequest = interviewRequest;
     this.hideForm = hideForm;
+    this.matched = matched;
   }
 }
    
