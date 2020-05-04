@@ -101,27 +101,28 @@ public class MatchServlet extends HttpServlet {
       Message msg = new MimeMessage(session);
       Message msg2 = new MimeMessage(session);
       msg.setFrom(new InternetAddress("interviews@match-mocker.appspotmail.com", "Match Mocker Team"));
-      msg.addRecipient(Message.RecipientType.TO, new InternetAddress(listingUser, "Match Mocker Interview Requestor"));
+      msg.addRecipient(Message.RecipientType.TO, new InternetAddress(listingUser, name));
+      msg.setSubject("Your interview is confirmed!");
       msg.setText("Congrats! Your mock interview is offically confirmed. Please see the interview information reminder below. \n \n" + 
-      "Time of Interview: " + time + "\n" +
-      "Intro Message: " + intro + "\n" + 
-      "Interview Topic: " + topic + "\n" +
-      "Spoken Language: " + spokenLanguage + "\n" +
-      "Programming Language: " + programmingLanguage + "\n" +
-      "Communication url: " + communicationURL + "\n" + 
-      "Programming Environment url: " + environmentURL + "\n");
+      "* Time of Interview: " + time + "\n \n" +
+      "* Interviewee Intro Message: " + intro + "\n \n" + 
+      "* Interview Topic: " + topic + "\n \n" +
+      "* Spoken Language: " + spokenLanguage + "\n \n" +
+      "* Programming Language: " + programmingLanguage + "\n \n" +
+      "* Communication url: " + communicationURL + "\n \n" + 
+      "* Programming Environment url: " + environmentURL);
       Transport.send(msg);
       msg2.setFrom(new InternetAddress("interviews@match-mocker.appspotmail.com", "Match Mocker Team"));
-      msg2.addRecipient(Message.RecipientType.TO, new InternetAddress(interviewUser, "Match Mocker Interview Acceptor"));
+      msg2.addRecipient(Message.RecipientType.TO, new InternetAddress(interviewUser, "Match Mocker Interviewer"));
       msg2.setSubject("Your interview is confirmed!");
       msg2.setText("Congrats! Your mock interview is offically confirmed. You will be interviewing " + name + ". Please see the interview information reminder below. \n \n" + 
-      "Time of Interview: " + time + "\n" +
-      "Intro Message: " + intro + "\n" + 
-      "Interview Topic: " + topic + "\n" +
-      "Spoken Language: " + spokenLanguage + "\n" +
-      "Programming Language: " + programmingLanguage + "\n" +
-      "Communication url: " + communicationURL + "\n" + 
-      "Programming Environment url: " + environmentURL + "\n");
+      "* Time of Interview: " + time + "\n \n" +
+      "* Interviewee Intro Message: " + intro + "\n \n" + 
+      "* Interview Topic: " + topic + "\n \n" +
+      "* Spoken Language: " + spokenLanguage + "\n \n" +
+      "* Programming Language: " + programmingLanguage + "\n \n" +
+      "* Communication url: " + communicationURL + "\n \n" + 
+      "* Programming Environment url: " + environmentURL);
       Transport.send(msg2);
     } catch (AddressException e) {
       // ...
