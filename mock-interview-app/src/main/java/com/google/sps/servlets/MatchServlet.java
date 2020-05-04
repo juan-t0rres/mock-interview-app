@@ -74,7 +74,7 @@ public class MatchServlet extends HttpServlet {
     String time = request.getParameter("time-checkbox");
     
     response.getWriter().print("Sending simple email.");
-    sendSimpleMail(interviewUser, listingUser);
+    sendSimpleMail(interviewUser, listingUser, entity, time);
     
 
     response.sendRedirect("/?matched=true");
@@ -82,22 +82,46 @@ public class MatchServlet extends HttpServlet {
 
 
 
-  private void sendSimpleMail(String interviewUser, String listingUser) {
+  private void sendSimpleMail(String interviewUser, String listingUser, Entity entity, String time) {
     // [START simple_example]
     Properties props = new Properties();
     Session session = Session.getDefaultInstance(props, null);
+
+    String name = (String)entity.getProperty("name");
+    String intro = (String)entity.getProperty("intro");
+    String topic = (String)entity.getProperty("topic");
+    String spokenLanguage = (String)entity.getProperty("spokenLanguage");
+    String programmingLanguage = (String)entity.getProperty("programmingLanguage");
+    String communicationURL = (String)entity.getProperty("communicationURL");
+    String environmentURL = (String)entity.getProperty("environmentURL");
+    
+    
 
     try {
       Message msg = new MimeMessage(session);
       Message msg2 = new MimeMessage(session);
       msg.setFrom(new InternetAddress("interviews@match-mocker.appspotmail.com", "Match Mocker Team"));
       msg.addRecipient(Message.RecipientType.TO, new InternetAddress(listingUser, "Match Mocker Interview Requestor"));
-      msg.setText("Congrats! Your interview is offically confirmed. Please see your home dashboard for details regarding your upcoming interview.");
+      msg.setText("Congrats! Your mock interview is offically confirmed. Please see the interview information reminder below. \n \n" + 
+      "Time of Interview: " + time + "\n" +
+      "Intro Message: " + intro + "\n" + 
+      "Interview Topic: " + topic + "\n" +
+      "Spoken Language: " + spokenLanguage + "\n" +
+      "Programming Language: " + programmingLanguage + "\n" +
+      "Communication url: " + communicationURL + "\n" + 
+      "Programming Environment url: " + environmentURL + "\n");
       Transport.send(msg);
       msg2.setFrom(new InternetAddress("interviews@match-mocker.appspotmail.com", "Match Mocker Team"));
       msg2.addRecipient(Message.RecipientType.TO, new InternetAddress(interviewUser, "Match Mocker Interview Acceptor"));
       msg2.setSubject("Your interview is confirmed!");
-      msg2.setText("Congrats! Your interview is offically confirmed. Please see your home dashboard for details regarding your upcoming interview.");
+      msg2.setText("Congrats! Your mock interview is offically confirmed. You will be interviewing " + name + ". Please see the interview information reminder below. \n \n" + 
+      "Time of Interview: " + time + "\n" +
+      "Intro Message: " + intro + "\n" + 
+      "Interview Topic: " + topic + "\n" +
+      "Spoken Language: " + spokenLanguage + "\n" +
+      "Programming Language: " + programmingLanguage + "\n" +
+      "Communication url: " + communicationURL + "\n" + 
+      "Programming Environment url: " + environmentURL + "\n");
       Transport.send(msg2);
     } catch (AddressException e) {
       // ...
