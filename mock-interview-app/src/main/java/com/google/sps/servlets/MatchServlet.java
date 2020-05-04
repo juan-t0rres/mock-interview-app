@@ -89,12 +89,16 @@ public class MatchServlet extends HttpServlet {
 
     try {
       Message msg = new MimeMessage(session);
+      Message msg2 = new MimeMessage(session);
       msg.setFrom(new InternetAddress("interviews@match-mocker.appspotmail.com", "Match Mocker Team"));
       msg.addRecipient(Message.RecipientType.TO, new InternetAddress(listingUser, "Match Mocker Interview Requestor"));
-      msg.addRecipient(Message.RecipientType.TO, new InternetAddress(interviewUser, "Match Mocker Interview Acceptor"));
-      msg.setSubject("Your interview is confirmed!");
       msg.setText("Congrats! Your interview is offically confirmed. Please see your home dashboard for details regarding your upcoming interview.");
       Transport.send(msg);
+      msg2.setFrom(new InternetAddress("interviews@match-mocker.appspotmail.com", "Match Mocker Team"));
+      msg2.addRecipient(Message.RecipientType.TO, new InternetAddress(interviewUser, "Match Mocker Interview Acceptor"));
+      msg2.setSubject("Your interview is confirmed!");
+      msg2.setText("Congrats! Your interview is offically confirmed. Please see your home dashboard for details regarding your upcoming interview.");
+      Transport.send(msg2);
     } catch (AddressException e) {
       // ...
     } catch (MessagingException e) {
