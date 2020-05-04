@@ -152,6 +152,10 @@ public class DataServlet extends HttpServlet {
 
     String[] times = request.getParameterValues("time_availability");
     List<String> timesAvailable = Arrays.asList(times);
+    //backend check for maximum time availability entries allowed (10)
+    if(timesAvailable.size() > 10) {
+        timesAvailable = timesAvailable.subList(0, 11);
+    }
     String username = userService.getCurrentUser().getEmail();
     Entity interviewEntity = new Entity("InterviewRequest");
     interviewEntity.setProperty("name",name);
