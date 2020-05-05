@@ -81,6 +81,10 @@ body {
   text-align: center;
 }
 
+#dynamicInput {
+  padding-bottom: 20px;
+}
+
 /* Taken from hover.css */
 .hvr-outline-in {
   display: inline-block;

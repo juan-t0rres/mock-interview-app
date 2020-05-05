@@ -68,7 +68,7 @@ async function getInterviewDetails() {
       if (date < today)
         continue;
       
-      let fDate = formatDate(date);
+      let fDate = formatDate(date) + ' (UTC)';
 
       if (hideForm) {
         $("#times").append(`<p>${fDate}</p>`);
@@ -188,13 +188,14 @@ async function getHeader() {
 
 var counter = 1;
 var limit = 10;
+let today = new Date().toISOString().substr(0,16);
 function addInput(divName){
      if (counter == limit)  {
           alert("You have reached the limit of adding " + counter + " time availability inputs");
      }
      else {
           var newdiv = document.createElement('div');
-          newdiv.innerHTML = "Entry " + (counter + 1) + " <br><input type='datetime-local' id='time_availability' name='time_availability' min='2020-01-01T00:00' max='2020-12-31T00:00'>";
+          newdiv.innerHTML = `Entry ${counter+1} <br><input type='datetime-local' class='form-control' id='time_availability' name='time_availability' min='${today}'>`
           document.getElementById(divName).appendChild(newdiv);
           counter++;
      }
@@ -206,7 +207,13 @@ async function getAlert(){
      console.log(text);
      if(text.includes("1")){
         alert("You already have an interview coming up! Only can confirm one interview at a time.");
-        window.location.pathname = '/interviews.html';
-     }    
+        window.location.pathname = '/';
+     }
+     getMin();
 }
+
+function getMin() {
+  $("#time_availability").attr('min',today);
+}
+
 
