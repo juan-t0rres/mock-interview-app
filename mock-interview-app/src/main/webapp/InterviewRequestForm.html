@@ -19,48 +19,56 @@
             <br>
             <form action="/data" method="POST">
                 <label for="name">Enter your name:</label>
-                <input type="text" name="name"/> <br><br>
-                <label for="intro">Give us a very brief introduction of who you are for people to see:</label>
-                <textarea name="intro" rows="8" cols="70"></textarea> <br><br>
-                <label for="interview_topic">Enter the topic you would like to interview on:</label>
-                <input type="text" list="interview_topic" name="topic"/>
-                <datalist id="interview_topic">
-                    <option>Data Structures and Algorithms</option>
-                    <option>Data Structures Only</option>
-                    <option>Design and Analysis of Algorithms</option>
-                </datalist> <br/><br/>
+                <input type="text" class="form-control" name="name"/> <br>
+                <label for="intro">Give us a brief introduction of who you are for people to see:</label>
+                <textarea name="intro" class="form-control" rows="8" cols="70"></textarea> <br>
+                <label for="topic">Select the topic you would like to interview on:</label>
+                <select class="form-control" name="topic">
+                    <option>Any Data Structure and Algorithm Questions</option>
+                    <option>Linked Lists</option>
+                    <option>Trees</option>
+                    <option>String</option>
+                    <option>Hashing</option>
+                    <option>Dynamic Programming</option>
+                    <option>Divide and Conquer</option>
+                    <option>Backtracking</option>
+                    <option>Brute Force</option>
+                    <option>Greedy</option>
+                    <option>Graph</option>
+                </select> <br>
                 <label for="spoken_lang">Enter the spoken language you would like to interview in:</label>
-                <input type="text" list="spoken_lang" name="spokenLanguage"/>
+                <input type="text" class="form-control" list="spoken_lang" name="spokenLanguage"/>
                 <datalist id="spoken_lang">
                     <! –– Please note that I just took the 5 most spoken languages in the world, as per https://www.fluentin3months.com/most-spoken-languages/ ––> 
-                    <option>Mandarin Chinese</option>
                     <option>English</option>
+                    <option>Mandarin Chinese</option>
                     <option>Hindustani</option>
                     <option>Spanish</option>
                     <option>Arabic</option>
-                </datalist> <br/><br/>
+                </datalist> <br>
                 <label for="programming_lang">Choose a Programming Language:</label>
-                <select name="programmingLanguage" id="programming_lang" required>
+                <select class="form-control" name="programmingLanguage" id="programming_lang" required>
                     <option>Java</option>
                     <option>Python</option>
                     <option>C++</option>
                     <option>C#</option>
                     <option>C</option>
                     <option>JavaScript</option>
-                </select> <br/><br/>
+                </select> <br>
                 <label for="hangouts_link">Paste a link to a Google Hangouts chat for your interview:</label>
-                <input type="text" id="hangouts_link" name="communicationURL"/> <br/><br/>
+                <input type="text" class="form-control" id="hangouts_link" name="communicationURL"/> <br>
 
                 <label for="environment_link">Paste a link to a pair programming environment for your interview:</label>
-                <input type="text" id="environment_link" name="environmentURL"/> <br/><br/>
+                <input type="text" class="form-control" id="environment_link" name="environmentURL"/> <br>
 
                 <label for="time_availability">Choose your time availability to interview:</label>
+                <p><small>Please enter all times in Coordinated Universal Time (UTC)</small></p>
                 <div id="dynamicInput">
-                    Entry 1</br><input type="datetime-local" id="time_availability" name="time_availability" min="2020-01-01T00:00" max="2020-12-31T00:00">
-                </div>
-                <input type="button" value="Add another time availability" onClick="addInput('dynamicInput');"> </br></br>    
+                    Entry 1</br><input type="datetime-local" class="form-control" id="time_availability" name="time_availability">
+                </div> 
+                <input type="button" class="btn btn-primary btn-sm" value="Add Another Time" onClick="addInput('dynamicInput');"/> <br><br>
 
-                <input type="submit"/>
+                <input class="btn btn-primary" type="submit"/>
             </form>
         </div>
         <div id="footer-placeholder"></div>
