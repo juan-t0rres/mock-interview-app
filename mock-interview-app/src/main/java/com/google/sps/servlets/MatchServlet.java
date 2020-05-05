@@ -100,9 +100,12 @@ public class MatchServlet extends HttpServlet {
     try {
       Message msg = new MimeMessage(session);
       Message msg2 = new MimeMessage(session);
+      String replyEmailString = "matchmocker@gmail.com";
+      InternetAddress[] replyAddress = InternetAddress.parse(replyEmailString);
       msg.setFrom(new InternetAddress("interviews@match-mocker.appspotmail.com", "Match Mocker Team"));
       msg.addRecipient(Message.RecipientType.TO, new InternetAddress(listingUser, name));
       msg.setSubject("Your Interview Request Has Been Accepted!");
+      msg.setReplyTo(replyAddress);
       msg.setText("Congrats! Your mock interview is offically confirmed. Please see the interview information reminder below. \n \n" + 
       "* Time of Interview: " + time + "\n \n" +
       "* Interviewee Intro Message: " + intro + "\n \n" + 
@@ -115,6 +118,7 @@ public class MatchServlet extends HttpServlet {
       msg2.setFrom(new InternetAddress("interviews@match-mocker.appspotmail.com", "Match Mocker Team"));
       msg2.addRecipient(Message.RecipientType.TO, new InternetAddress(interviewUser, "Match Mocker Interviewer"));
       msg2.setSubject("Your Interview is Confirmed!");
+      msg2.setReplyTo(replyAddress);
       msg2.setText("Congrats! Your mock interview is offically confirmed. You will be interviewing " + name + ". Please see the interview information reminder below. \n \n" + 
       "* Time of Interview: " + time + "\n \n" +
       "* Interviewee Intro Message: " + intro + "\n \n" + 
