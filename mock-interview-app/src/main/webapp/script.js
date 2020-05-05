@@ -68,7 +68,7 @@ async function getInterviewDetails() {
       if (date < today)
         continue;
       
-      let fDate = formatDate(date);
+      let fDate = formatDate(date) + ' (UTC)';
 
       if (hideForm) {
         $("#times").append(`<p>${fDate}</p>`);
