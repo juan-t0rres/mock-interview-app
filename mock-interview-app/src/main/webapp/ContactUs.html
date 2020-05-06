@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <meta charset="UTF-8">
+        <title>Contact Us Form</title>
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2:wght@500&display=swap" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js"></script>
+  </head>
+  <body onload="getSections();getAlert();">
+        <div id="header-placeholder"></div>
+        <div id="content" class="animated fadeIn">
+            <h3>Contact Us!</h3>
+            <br>
+            <form action="/contact" method="POST">
+                <label for="name">Enter your preferred name:</label>
+                <input type="text" class="form-control" name="name"/> <br>
+                <label for="topic">Select the reason you are reaching out to us:</label>
+                <select class="form-control" name="topic">
+                    <option>General Inquiry</option>
+                    <option>Interview Concern</option>
+                    <option>Report a Bug/Mistake/Error</option>
+                    <option>General Mock Matcher Feedback</option>
+                    <option>Other</option>
+                </select> <br>
+                <label for="message">Type Your Message Below</label>
+                <textarea name="message" class="form-control" rows="8" cols="70"></textarea> <br>
+                
+                <input class="btn btn-primary" type="submit" onclick="alert('Thank you for getting in touch! We appreciate you contacting the Match Mocker Team. We will get back in touch with you soon. You will now be redirected to your home dashboard');" />
+            </form>
+        </div>
+        <div id="footer-placeholder"></div>
+    </body>
+</html>
