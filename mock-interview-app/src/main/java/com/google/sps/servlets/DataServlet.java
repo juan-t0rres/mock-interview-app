@@ -73,12 +73,6 @@ public class DataServlet extends HttpServlet {
     }
     
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
-    if(AlertServlet.getOpenRequest() != null) {
-        response.sendRedirect("/interviews.html");
-        return;
-    }
-
     Entity newInterviewRequest = getInterviewEntity(request);
     datastore.put(newInterviewRequest); 
     String key = KeyFactory.keyToString(newInterviewRequest.getKey());
@@ -89,8 +83,9 @@ public class DataServlet extends HttpServlet {
     for (Entity entity : results.asIterable()) {
         List<String> timesAvailable = (List<String>)entity.getProperty("timesAvailable");
         boolean closed = (boolean)entity.getProperty("closed");
-        boolean matched = (boolean)entity.getProperty("matched");
-        if(closed || matched || !InterviewRequest.checkForOpenTime(timesAvailable))
+        String match = (String)entity.getProperty("match");
+        int chosenTime = ((Long)entity.getProperty("chosenTime")).intValue();
+        if(closed || match != null || !InterviewRequest.checkForOpenTime(timesAvailable,chosenTime))
             continue;
 
         String name = (String)entity.getProperty("name");
@@ -105,7 +100,7 @@ public class DataServlet extends HttpServlet {
         long timestamp = (long)entity.getProperty("timestamp");
 
         interviews.add(new InterviewRequest(name,intro,topic,spokenLanguage,programmingLanguage,
-        communicationURL,environmentURL,timesAvailable,key,username,closed,matched,timestamp));
+        communicationURL,environmentURL,timesAvailable,key,username,closed,match,chosenTime,timestamp));
     }
   }
 
@@ -129,15 +124,16 @@ public class DataServlet extends HttpServlet {
     List<String> timesAvailable = (List<String>)entity.getProperty("timesAvailable");
     String username = (String)entity.getProperty("username");
     boolean closed = (boolean)entity.getProperty("closed");
-    boolean matched = (boolean)entity.getProperty("matched");
+    String match = (String)entity.getProperty("match");
+    int chosenTime = ((Long)entity.getProperty("chosenTime")).intValue();
     long timestamp = (long)entity.getProperty("timestamp");
 
-    boolean hideForm = userEmail.equals(username) || closed;
+    boolean hideForm = userEmail.equals(username) || closed || (match != null);
 
     InterviewRequest interviewRequest = new InterviewRequest(name,intro,topic,spokenLanguage,programmingLanguage,
-    communicationURL,environmentURL,timesAvailable,key,username,closed,matched,timestamp);
+    communicationURL,environmentURL,timesAvailable,key,username,closed,match,chosenTime,timestamp);
 
-    return new DetailsResponse(interviewRequest,hideForm,matched);
+    return new DetailsResponse(interviewRequest,hideForm,match!=null);
   }
 
   public Entity getInterviewEntity(HttpServletRequest request) {
@@ -169,7 +165,8 @@ public class DataServlet extends HttpServlet {
     interviewEntity.setProperty("timestamp",System.currentTimeMillis());
     interviewEntity.setProperty("username",username);
     interviewEntity.setProperty("closed",false);
-    interviewEntity.setProperty("matched", false);
+    interviewEntity.setProperty("match", null);
+    interviewEntity.setProperty("chosenTime",-1);
     return interviewEntity;
   }
 

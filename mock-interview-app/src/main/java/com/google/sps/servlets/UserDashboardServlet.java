@@ -34,51 +34,76 @@ public class UserDashboardServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     
-    InterviewRequest pending = null;
+    List<InterviewRequest> pending = new ArrayList<>();
     List<InterviewRequest> past = new ArrayList<>();
     
-    String key = AlertServlet.getOpenRequest();
+    Set<String> keys = getPendingRequests();
 
-    if (key != null)
-    	pending = DataServlet.specificEntity(datastore,key,userEmail).interviewRequest;
+    for (String key: keys) {
+      pending.add(DataServlet.specificEntity(datastore,key,userEmail).interviewRequest);
+    }
 
     for (Entity entity : results.asIterable()) {
         String entityKey = KeyFactory.keyToString(entity.getKey());
-
-        // If this listing is the key found from the current open request,
-        // then we skip it because we don;t want to add it to the "past" list.
-        if (entityKey.equals(key))
+        // If we have used this key before for pending, don't put it in past.
+        if (keys.contains(entityKey))
         	continue;
-
-        String name = (String)entity.getProperty("name");
-        String intro = (String)entity.getProperty("intro");
-        String topic = (String)entity.getProperty("topic");
-        String spokenLanguage = (String)entity.getProperty("spokenLanguage");
-        String programmingLanguage = (String)entity.getProperty("programmingLanguage");
-        String communicationURL = (String)entity.getProperty("communicationURL");
-        String environmentURL = (String)entity.getProperty("environmentURL");
-        List<String> timesAvailable = (List<String>)entity.getProperty("timesAvailable");
-        String username = (String)entity.getProperty("username");
-        boolean closed = (boolean)entity.getProperty("closed");
-        boolean matched = (boolean)entity.getProperty("matched");
-        long timestamp = (long)entity.getProperty("timestamp");
-
-        past.add(new InterviewRequest(name,intro,topic,spokenLanguage,programmingLanguage,communicationURL,
-        environmentURL,timesAvailable,entityKey,username,closed,matched,timestamp));
+        past.add(DataServlet.specificEntity(datastore,entityKey,userEmail).interviewRequest);
     }
+
+    Filter matchFilter = new FilterPredicate("match", FilterOperator.EQUAL, userEmail);
+	  query = new Query("InterviewRequest").setFilter(matchFilter).addSort("timestamp", SortDirection.DESCENDING);
+    results = datastore.prepare(query);
+    for (Entity entity : results.asIterable()) {
+      String entityKey = KeyFactory.keyToString(entity.getKey());
+      if (keys.contains(entityKey))
+        continue;
+      past.add(DataServlet.specificEntity(datastore,entityKey,userEmail).interviewRequest);
+  }
     
     response.setContentType("application/json;");
     response.getWriter().println((new Gson()).toJson(new UserDashboard(userEmail,pending,past)));
+  }
+
+   // Function that returns the keys of the pending interviews a user has.
+  public static Set<String> getPendingRequests() {
+    UserService userService = UserServiceFactory.getUserService();
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    String userEmail = userService.getCurrentUser().getEmail();
+
+    Set<String> requests = new HashSet<>();
+
+    Filter userFilter = new FilterPredicate("username", FilterOperator.EQUAL, userEmail);
+    Query q = new Query("InterviewRequest").setFilter(userFilter); 
+    PreparedQuery pq = datastore.prepare(q);
+    for (Entity result : pq.asIterable()) {
+      List<String> times = (List<String>)result.getProperty("timesAvailable");
+      int chosenTime = ((Long)result.getProperty("chosenTime")).intValue();
+      boolean closed = (boolean)result.getProperty("closed");
+      if (!closed && InterviewRequest.checkForOpenTime(times,chosenTime))
+        requests.add(KeyFactory.keyToString(result.getKey()));
+    }
+    Filter matchFilter = new FilterPredicate("match", FilterOperator.EQUAL, userEmail);
+    q = new Query("InterviewRequest").setFilter(matchFilter);
+    pq = datastore.prepare(q);
+    for (Entity result : pq.asIterable()) {
+      List<String> times = (List<String>)result.getProperty("timesAvailable");
+      int chosenTime = ((Long)result.getProperty("chosenTime")).intValue();
+      boolean closed = (boolean)result.getProperty("closed");
+      if (!closed && InterviewRequest.checkForOpenTime(times,chosenTime))
+        requests.add(KeyFactory.keyToString(result.getKey()));
+    }
+    return requests;
   }
 
 }
 
 class UserDashboard {
 	String username;
-	InterviewRequest pending;
+	List<InterviewRequest> pending;
 	List<InterviewRequest> past;
 
-	public UserDashboard(String username, InterviewRequest pending, List<InterviewRequest> past) {
+	public UserDashboard(String username, List<InterviewRequest> pending, List<InterviewRequest> past) {
 		this.username = username;
 		this.pending = pending;
 		this.past = past;
