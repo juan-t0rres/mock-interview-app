@@ -37,19 +37,13 @@ body {
 }
 
 .listing {
-    transition: box-shadow .3s;
-    border-radius: 15px;
-    background-color: var(--main-color);
-    padding: 15px; 
-    margin-bottom: 20px;
-}
-
-.listing p {
-    font-size: 16px;
+  transition: box-shadow .3s;
+  background-color: var(--main-color);
+  margin-bottom: 10px;
 }
 
 .listing:hover {
-	box-shadow: 0 0 12px rgba(0,0,0,0.3); 
+	box-shadow: 0 0 6px rgba(0,0,0,0.3); 
 }
 
 .details {

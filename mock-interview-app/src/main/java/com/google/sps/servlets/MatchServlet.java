@@ -63,15 +63,19 @@ public class MatchServlet extends HttpServlet {
         return;
     }
 
-    entity.setProperty("matched",true);
-    datastore.put(entity);
-
     // We can use these 3 for the email system.
     // We also have the InterviewRequest entity so we can include all other relevant
     // information into the email such as the links, programming language, etc.
     String interviewUser = userService.getCurrentUser().getEmail();
     String listingUser = (String)entity.getProperty("username");
-    String time = request.getParameter("time-checkbox");
+    List<String> timesAvailable = (List<String>)entity.getProperty("timesAvailable");
+    String[] timeCheckbox = request.getParameter("time-checkbox").split(";");
+    String time = timeCheckbox[0];
+    int chosenTime = Integer.parseInt(timeCheckbox[1]);
+
+    entity.setProperty("match",interviewUser);
+    entity.setProperty("chosenTime",chosenTime);
+    datastore.put(entity);
     
     response.getWriter().print("Sending simple email.");
     sendSimpleMail(interviewUser, listingUser, entity, time);

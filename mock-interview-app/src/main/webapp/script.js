@@ -25,19 +25,23 @@ async function getInterviewRequests(language) {
     $("#content").show();
 }
 
-function createListing(listing,dashboard) {
-  let html = `<div class="listing">`;
-  html += `<p><b>Name:</b> ${listing.name}</p>`;
-  html += `<p><b>Spoken Language:</b> ${listing.spokenLanguage}</p>`;
-  html += `<p><b>Programming Language:</b> ${listing.programmingLanguage}</p>`;
-  html += `<p><b>Preferred Topic (If Any):</b> ${listing.topic}</p>`;
+function createListing(listing, dashboard, matched) {
+  let html = `<div class="card listing">`;
+  if (matched) {
+    html += `<div class="card-header bg-success text-white">Matched!</div>`;
+  }
+  html += `<div class="card-body">`;
+  html += `<h5 class="card-title">${listing.name}</h5>`;
+  html += `<p class="card-text"><b>Spoken Language:</b> ${listing.spokenLanguage}</p>`;
+  html += `<p class="card-text"><b>Programming Language:</b> ${listing.programmingLanguage}</p>`;
+  html += `<p class="card-text"><b>Preffered Topic:</b> ${listing.topic}</p>`;
   html += `<a class="btn btn-primary btn-sm" href="InterviewRequestDetails.html?key=${listing.key}">View Listing</a>`;
   if (dashboard) {
     html += `<form action="/cancel?key=${listing.key}" method="POST" style="float: right;">`;
-    html += `<input class="btn btn-danger btn-sm" type="submit" value="Cancel" />`;
+    html += `<input class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Are you sure you want to cancel this mock interview?');" value="Cancel" />`;
     html += `</form>`;
   }
-  html += `</div>`;
+  html += `</div></div>`;
   return html;
 }
 
@@ -62,19 +66,19 @@ async function getInterviewDetails() {
     $("#listing-intro").text(listing.intro);
 
     let today = new Date();
+    let k = -1;
     for (const time of listing.timesAvailable) {
+      k++;
       let date = new Date(time);
       // don't display options that are no longer valid
       if (date < today)
         continue;
       
       let fDate = formatDate(date) + ' (UTC)';
+      let value = fDate + ';' + k;
 
-      if (hideForm) {
-        $("#times").append(`<p>${fDate}</p>`);
-      }
-      else {
-        $("#time-form").append(`<input type="checkbox" class="form-check-input" value="${fDate}" name="time-checkbox" />`);
+      if (!hideForm) {
+        $("#time-form").append(`<input type="checkbox" class="form-check-input" value="${value}" name="time-checkbox" />`);
         $("#time-form").append(`<label class="form-check-label" for="time-checkbox">${fDate}</label><br>`);
       }
     }
@@ -85,8 +89,12 @@ async function getInterviewDetails() {
       $("#time-form").show();
     }
 
-    if (listing.matched)
+    if (hideForm && listing.chosenTime != -1) {
+      let chosen = new Date(listing.timesAvailable[listing.chosenTime]);
+      let chosenTime = formatDate(chosen) + ' (UTC)';
+      $("#time").append(`<p><b>Chosen Time:</b> ${chosenTime}</p>`);
       $("#matched").show();
+    }
 
     // only allow one checkbox to be checked
     $('input[type="checkbox"]').on('change', function() {
@@ -102,6 +110,7 @@ async function login() {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const matched = urlParams.get('matched');
+  const cancelled = urlParams.get('cancel');
 
   if (loginResponse.loggedIn) {
     $("#logout-button").attr("href",url);
@@ -113,16 +122,12 @@ async function login() {
     const username = userDashboard.username;
     $("#username").text(username.substr(0,username.indexOf('@')));
     
-    if (userDashboard.pending == null) {
-      $("#pending-listing").html(`<p>You currently have no open interview requests.</p>`);
-    }
-    else if (userDashboard.pending.matched) {
-      $("#pending-listing").append(`<div class="alert alert-success" role="alert">
-        A match has been found for your mock interview! </div>`);
-      $("#pending-listing").append(createListing(userDashboard.pending,false));
+    if (userDashboard.pending.length == 0) {
+      $("#pending-listing").html(`<p>You currently have no upcoming/pending mock interviews.</p>`);
     }
     else {
-      $("#pending-listing").html(createListing(userDashboard.pending,true));
+      for(const listing of userDashboard.pending)
+        $("#pending-listing").append(createListing(listing,true,listing.match != null));
     }
 
     if (userDashboard.past.length == 0) {
@@ -144,6 +149,14 @@ async function login() {
       if (matched == 'false') {
         $("#header-placeholder").append(`<div class="alert alert-danger" role="alert">
           Server Error: Match unsuccessful.</div>`);
+      }
+    }
+
+    // Add alert if someone came from a cancelllation
+    if (cancelled != null) {
+      if (cancelled == 'true') {
+        $("#header-placeholder").append(`<div class="alert alert-danger" role="alert">
+          You have successfully cancelled your mock interview. An email has been sent to the other user if there was a match.</div>`);
       }
     }
 

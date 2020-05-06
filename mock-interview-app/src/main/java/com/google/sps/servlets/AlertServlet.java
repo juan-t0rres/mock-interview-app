@@ -27,30 +27,29 @@ public class AlertServlet extends HttpServlet {
         return;
     }
 
-    String key = getOpenRequest();
-    if(key != null) {
+    if(checkOpenRequest()) {
         response.setContentType("text/html");
         String number = "1";
         response.getWriter().write(number);
     }
   }
 
-  // Function that returns the key of the open listing that the user has made.
-  // If there are no open listings, then returns null.
-  public static String getOpenRequest() {
+  public static boolean checkOpenRequest() {
     UserService userService = UserServiceFactory.getUserService();
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     String userEmail = userService.getCurrentUser().getEmail();
+
     Filter userFilter = new FilterPredicate("username", FilterOperator.EQUAL, userEmail);
     Query q = new Query("InterviewRequest").setFilter(userFilter); 
     PreparedQuery pq = datastore.prepare(q);
     for (Entity result : pq.asIterable()) {
       List<String> times = (List<String>)result.getProperty("timesAvailable");
+      int chosenTime = ((Long)result.getProperty("chosenTime")).intValue();
       boolean closed = (boolean)result.getProperty("closed");
-      if (InterviewRequest.checkForOpenTime(times) && !closed)
-        return KeyFactory.keyToString(result.getKey());
+      if (!closed && InterviewRequest.checkForOpenTime(times,chosenTime))
+        return true;
     }
-    return null;
+    return false;
   }
- 
+  
 }
