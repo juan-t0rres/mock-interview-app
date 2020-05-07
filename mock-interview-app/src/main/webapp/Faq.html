@@ -15,20 +15,22 @@
   <body onload="getSections();">
         <div id="header-placeholder"></div>
         <div id="content" class="animated fadeIn">
-            
-            <h2>Frequently Asked Questions</h2>
           <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
           <div class="panel panel-default">
+            <div class="panel-heading p-3 mb-3" role="tab">
+              <h2>Frequently Asked Questions</h2>
+            </div>
 		  <div class="panel-heading p-3 mb-3" role="tab" id="heading0">
 			<h3 class="panel-title">
 			  <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse0" aria-expanded="true" aria-controls="collapse0">
-				Why does the "request an interview link" disappear after I request an interview?
+				Why does the "request an interview" tab disappear after I request an interview?
 			  </a>
 			</h3>
 		  </div>
 		  <div id="collapse0" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading0">
 			<div class="panel-body px-3 mb-4">
-			  <p>At the moment each user can only request one interview at a time.</p>
+			  <p>At the moment, we only allow one active (unexpired) interview request or scheduled interview per person. 
+                  Therefore, we remove the option to go to the "request an interview" page while you have an active interview request listing or scheduled interview.</p>
 			</div>
 		  </div>
 		</div>
@@ -37,14 +39,14 @@
 		  <div class="panel-heading p-3 mb-3" role="tab" id="heading1">
 			<h3 class="panel-title">
 			  <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
-				I want to be the interviewer but I don't see a button to accept an interview request on the listings page. How do I accept one?
+				I want to give an interview but I don't see a button to accept an interview request on the listings page. How do I accept one?
 			  </a>
 			</h3>
 		  </div>
 		  <div id="collapse1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading1">
 			<div class="panel-body px-3 mb-4">
 			  <p>From the listings page, you can click on a listing that interests you, and a page with the full
-                  interview request details will appear. On that page, there will be a button to accept an interview request.</p>
+                  interview request details will appear. On that page, there will be an easily identifiable button to accept an interview request.</p>
 			</div>
 		  </div>
 		</div>
@@ -54,14 +56,17 @@
 		  <div class="panel-heading p-3 mb-3" role="tab" id="heading2">
 			<h3 class="panel-title">
 			  <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
-				What is an example of a mock interview?
+				Can you please provide me with an example of a mock interview?
 			  </a>
 			</h3>
 		  </div>
 		  <div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading2">
 			<div class="panel-body px-3 mb-4">
-			  <p>Here is an example of a mock interview from Google! (We don't represent Google)</p>
-              <a href ="https://www.youtube.com/watch?v=wwIysnVmAUg" target="_blank">Google Mock Interview</a>
+			  <p>Below is an example of a mock interview from Google. 
+                  The style of the mock interviews on Match Mocker should be similar to that of the example provided.</p> 
+              <a href ="https://www.youtube.com/watch?v=wwIysnVmAUg" target="_blank">Google Mock Interview</a> </br></br>
+              <p>Please note: Match Mocker does not claim to be an official Google affiliate.</p>
+              
 			</div>
 		  </div>
 		</div>
@@ -76,7 +81,9 @@
 		  </div>
 		  <div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading3">
 			<div class="panel-body px-3 mb-4">
-			  <p>The mock interview will take place on the coding environment from the interview listing. Communicating will be done over the Google Hangout link also from the interview listing.</p>
+			  <p>In the interview request listing, you will be able to see urls to the coding environment of the interviewer's choice and a Google Hangouts chat, 
+                  which is where the coding and communication will take place, respectively.</p> </br>
+              <p>Please note: Some companies do not allow interviewers to use an IDE (Integrated Development Environment) during the interview, so we suggest that interviewers choose an evironment without a code "auto-complete" feature.</p>
 			</div>
 		  </div>
 		</div>
@@ -85,13 +92,14 @@
 		  <div class="panel-heading p-3 mb-3" role="tab" id="heading4">
 			<h3 class="panel-title">
 			  <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="true" aria-controls="collapse4">
-				Does the Video Chat link have to be through Google Hangouts?
+				Does the spoken communication for the interview have to be via Google Hangouts?
 			  </a>
 			</h3>
 		  </div>
 		  <div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading4">
 			<div class="panel-body px-3 mb-4">
-			  <p>As of now yes.</p>
+			  <p>At the moment, yes, as we want to ensure that communication is done safely and effectively. 
+                  While several reliable communication platforms exist, the Match Mocker team feels that uniformly requiring use of the Google Hangouts platform will allow for the safest and most secure experience for our users.</p>
 			</div>
 		  </div>
 		</div>
@@ -106,7 +114,8 @@
 		  </div>
 		  <div id="collapse5" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading5">
 			<div class="panel-body px-3 mb-4">
-			  <p>It is up to you because most interviews are over the phone.</p>
+			  <p>It is up to you, but we suggest that the camera be shut off, as it will allow for an experience more similar to the technical phone intervews that companies tend to give. 
+                  Additionally, having both the interviewer and interviewee shut off their cameras will enhance safety and privacy for both parties.</p>
 			</div>
 		  </div>
 		</div>
@@ -115,25 +124,24 @@
 		  <div class="panel-heading p-3 mb-3" role="tab" id="heading6">
 			<h3 class="panel-title">
 			  <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse6" aria-expanded="true" aria-controls="collapse6">
-				What's the benefit of giving an interview?
+				What's the benefit of being the mock interviewer?
 			  </a>
 			</h3>
 		  </div>
 		  <div id="collapse6" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading6">
 			<div class="panel-body px-3 mb-4">
-			  <p>Giving an interview can help you increase your understanding of that type of (algorithm/data structure) question. It will also make you more aware of what interviewers look for when your the interviewee.</p>
+			  <p>There are many benefits to being the mock interviewer, but to name a few: </br>
+              <ul>
+                <li> Giving an interview can help you improve your understanding of the type of (algorithm/data structure) question that you give. </li>
+                <li> Experiencing what it's like to be the interviewer will help you become more aware of what an interviewer looks for from an interviewer. </li>
+                <li> You will learn from what the person you are interviewing does and doesn't do well. </li>
+              </ul>
+              </p>
 			</div>
 		  </div>
 		</div>
 
         </div>
-
-
-
-
-
-
-
 
         </div>
         <div id="footer-placeholder"></div>
