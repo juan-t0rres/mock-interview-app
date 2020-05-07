@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <meta charset="UTF-8">
+        <title>FAQ</title>
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2:wght@500&display=swap" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js"></script>
+  </head>
+  <body onload="getSections();">
+        <div id="header-placeholder"></div>
+        <div id="content" class="animated fadeIn">
+            
+            <h2>Frequently Asked Questions</h2>
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+		  <div class="panel-heading p-3 mb-3" role="tab" id="heading0">
+			<h3 class="panel-title">
+			  <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse0" aria-expanded="true" aria-controls="collapse0">
+				Why does the "request an interview link" disappear after I request an interview?
+			  </a>
+			</h3>
+		  </div>
+		  <div id="collapse0" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading0">
+			<div class="panel-body px-3 mb-4">
+			  <p>At the moment each user can only request one interview at a time.</p>
+			</div>
+		  </div>
+		</div>
+
+        <div class="panel panel-default">
+		  <div class="panel-heading p-3 mb-3" role="tab" id="heading1">
+			<h3 class="panel-title">
+			  <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true" aria-controls="collapse1">
+				I want to be the interviewer but I don't see a button to accept an interview request on the listings page. How do I accept one?
+			  </a>
+			</h3>
+		  </div>
+		  <div id="collapse1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading1">
+			<div class="panel-body px-3 mb-4">
+			  <p>From the listings page, you can click on a listing that interests you, and a page with the full
+                  interview request details will appear. On that page, there will be a button to accept an interview request.</p>
+			</div>
+		  </div>
+		</div>
+
+
+        <div class="panel panel-default">
+		  <div class="panel-heading p-3 mb-3" role="tab" id="heading2">
+			<h3 class="panel-title">
+			  <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+				What is an example of a mock interview?
+			  </a>
+			</h3>
+		  </div>
+		  <div id="collapse2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading2">
+			<div class="panel-body px-3 mb-4">
+			  <p>Here is an example of a mock interview from Google! (We don't represent Google)</p>
+              <a href ="https://www.youtube.com/watch?v=wwIysnVmAUg" target="_blank">Google Mock Interview</a>
+			</div>
+		  </div>
+		</div>
+
+        <div class="panel panel-default">
+		  <div class="panel-heading p-3 mb-3" role="tab" id="heading3">
+			<h3 class="panel-title">
+			  <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
+				Where will the mock interview take place?
+			  </a>
+			</h3>
+		  </div>
+		  <div id="collapse3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading3">
+			<div class="panel-body px-3 mb-4">
+			  <p>The mock interview will take place on the coding environment from the interview listing. Communicating will be done over the Google Hangout link also from the interview listing.</p>
+			</div>
+		  </div>
+		</div>
+
+        <div class="panel panel-default">
+		  <div class="panel-heading p-3 mb-3" role="tab" id="heading4">
+			<h3 class="panel-title">
+			  <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="true" aria-controls="collapse4">
+				Does the Video Chat link have to be through Google Hangouts?
+			  </a>
+			</h3>
+		  </div>
+		  <div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading4">
+			<div class="panel-body px-3 mb-4">
+			  <p>As of now yes.</p>
+			</div>
+		  </div>
+		</div>
+
+         <div class="panel panel-default">
+		  <div class="panel-heading p-3 mb-3" role="tab" id="heading5">
+			<h3 class="panel-title">
+			  <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse5" aria-expanded="true" aria-controls="collapse5">
+				During the interview, should I have my camera on?
+			  </a>
+			</h3>
+		  </div>
+		  <div id="collapse5" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading5">
+			<div class="panel-body px-3 mb-4">
+			  <p>It is up to you because most interviews are over the phone.</p>
+			</div>
+		  </div>
+		</div>
+
+        <div class="panel panel-default">
+		  <div class="panel-heading p-3 mb-3" role="tab" id="heading6">
+			<h3 class="panel-title">
+			  <a class="collapsed" role="button" title="" data-toggle="collapse" data-parent="#accordion" href="#collapse6" aria-expanded="true" aria-controls="collapse6">
+				What's the benefit of giving an interview?
+			  </a>
+			</h3>
+		  </div>
+		  <div id="collapse6" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading6">
+			<div class="panel-body px-3 mb-4">
+			  <p>Giving an interview can help you increase your understanding of that type of (algorithm/data structure) question. It will also make you more aware of what interviewers look for when your the interviewee.</p>
+			</div>
+		  </div>
+		</div>
+
+        </div>
+
+
+
+
+
+
+
+
+        </div>
+        <div id="footer-placeholder"></div>
+    </body>
+</html>
