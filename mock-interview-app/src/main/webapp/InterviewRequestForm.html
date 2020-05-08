@@ -37,7 +37,7 @@
                     <option>Graph</option>
                 </select> <br>
                 <label for="spoken_lang">Enter the spoken language you would like to interview in:</label>
-                <input type="text" class="form-control" list="spoken_lang" name="spokenLanguage"/>
+                <input type="text" class="form-control" list="spoken_lang" name="spokenLanguage" required/>
                 <datalist id="spoken_lang">
                     <! –– Please note that I just took the 5 most spoken languages in the world, as per https://www.fluentin3months.com/most-spoken-languages/ ––> 
                     <option>English</option>
@@ -56,15 +56,15 @@
                     <option>JavaScript</option>
                 </select> <br>
                 <label for="hangouts_link">Paste a link to a Google Hangouts chat for your interview:</label>
-                <input type="text" class="form-control" id="hangouts_link" name="communicationURL"/> <br>
+                <input type="text" class="form-control" id="hangouts_link" name="communicationURL"/ required> <br>
 
                 <label for="environment_link">Paste a link to a pair programming environment for your interview:</label>
-                <input type="text" class="form-control" id="environment_link" name="environmentURL"/> <br>
+                <input type="text" class="form-control" id="environment_link" name="environmentURL" required/> <br>
 
                 <label for="time_availability">Choose your time availability to interview:</label>
                 <p><small>Please enter all times in Coordinated Universal Time (UTC). See <a href="https://www.thetimezoneconverter.com/" target="_blank">this time zone converter</a> for reference.</small></p>
                 <div id="dynamicInput">
-                    Entry 1</br><input type="datetime-local" class="form-control" id="time_availability" name="time_availability">
+                    Entry 1</br><input type="datetime-local" class="form-control" id="time_availability" name="time_availability" required>
                 </div> 
                 <input type="button" class="btn btn-primary btn-sm" value="Add Another Time" onClick="addInput('dynamicInput');"/> <br><br>
 
