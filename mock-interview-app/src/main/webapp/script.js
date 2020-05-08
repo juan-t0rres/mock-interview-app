@@ -208,7 +208,7 @@ function addInput(divName){
      }
      else {
           var newdiv = document.createElement('div');
-          newdiv.innerHTML = `Entry ${counter+1} <br><input type='datetime-local' class='form-control' id='time_availability' name='time_availability' min='${today}'>`
+          newdiv.innerHTML = `Entry ${counter+1} <br><input type='datetime-local' class='form-control' id='time_availability' name='time_availability' min='${today}' required>`
           document.getElementById(divName).appendChild(newdiv);
           counter++;
      }
